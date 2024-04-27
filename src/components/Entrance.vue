@@ -1,10 +1,16 @@
 <template>
     <div>
-        <!-- <ModalViewTask @getTasksEmit="getTasks" v-model:showModalViewTask="showModalViewTask" :task="selectedTask"></ModalViewTask> -->
-        <ModalUpdateTask @getTasksEmit="getTasks" v-model:showModalUpdateTask="showModalUpdateTask" :task="selectedTask"></ModalUpdateTask>
-        <ModalUpdateDate @getTasksEmit="getTasks" v-model:showModalUpdateDate="showModalUpdateDate" :task="selectedTask"></ModalUpdateDate>
-        <ModalUpdateSubtask @getTasksEmit="getTasks" v-model:showModalUpdateSubtask="showModalUpdateSubtask" :subtask="subtask"></ModalUpdateSubtask>
-        <!-- <ModalNewSubtask @getTasksEmit="getTasks" v-model:showModalNewSubtask="showModalNewSubtask" :task="task"></ModalNewSubtask> -->
+        <ModalViewTask @getTasksEmit="getTasks" v-model:showModalViewTask="showModalViewTask" :task="selectedTask"></ModalViewTask>
+        <ModalUpdateTask @getTasksEmit="getTasks" v-model:showModalUpdateTask="showModalUpdateTask"
+            :task="selectedTask"></ModalUpdateTask>
+        <ModalUpdateDate @getTasksEmit="getTasks" v-model:showModalUpdateDate="showModalUpdateDate"
+            :task="selectedTask"></ModalUpdateDate>
+        <ModalUpdateSubtask @getTasksEmit="getTasks" v-model:showModalUpdateSubtask="showModalUpdateSubtask"
+            :subtask="selectedTask"></ModalUpdateSubtask>
+        <ModalNewSubtask @getTasksEmit="getTasks" v-model:showModalNewSubtask="showModalNewSubtask"
+            :task="selectedTask"></ModalNewSubtask>
+        <ModalNewTask @getTasksEmit="getTasks" v-model:showModalNewTask="showModalNewTask" :task="selectedTask">
+        </ModalNewTask>
 
         <div class="main-content">
 
@@ -20,7 +26,7 @@
                         <div class="task">
 
                             <div>
-                                {{ task.id }}
+                               
                                 <button class="checkbutton" @click="checkTask(task.id)">
                                     <div v-if="task.taskstatus == 'pending'">
                                         <img src="/checkvazio.svg" alt="check">
@@ -36,7 +42,7 @@
 
                                 <button @click="selectedTask = task, showModalViewTask = true" class="tasktitle"> {{
                                     task.tasktitle
-                                    }}</button>
+                                }}</button>
 
                                 {{ task.id }}
 
@@ -58,9 +64,11 @@
                                     </div>
 
                                     <div class="counter">
-                                        {{ subtasks.filter(sub => sub.task_id == task.id && sub.subtaskstatus ==
-                                            "completed").length }}/{{ subtasks.filter(sub => sub.task_id == task.id).length
+                                        {{ task.subtasks.filter(sub => sub.task_id == task.id && sub.subtaskstatus ==
+                                            "completed").length }}/{{ task.subtasks.filter(sub => sub.task_id ==
+                                            task.id).length
                                         }}
+                                        
                                     </div>
                                 </div>
 
@@ -71,7 +79,8 @@
 
                             <div class="menu-tasks">
 
-                                <button @click="selectedTask = task, showModalUpdateTask = true" class="button-icon-date"><img src="/lapis.svg" alt="lapis"></button>
+                                <button @click="selectedTask = task, showModalUpdateTask = true"
+                                    class="button-icon-date"><img src="/lapis.svg" alt="lapis"></button>
 
 
                                 <button @click="selectedTask = task, showModalUpdateDate = true"
@@ -89,7 +98,7 @@
 
                         <div class="main-subtask-content">
 
-                            <div v-for="subtask in subtasks.filter(sub => sub.task_id == task.id)" :key="subtask.id">
+                            <div v-for="subtask in task.subtasks" :key="task.subtasks.id">
 
                                 <div class="sub-task-content">
 
@@ -182,6 +191,7 @@ import ModalUpdateTask from './../components/ModalUpdateTask.vue'
 import ModalViewTask from './../components/ModalViewTask.vue'
 import ModalUpdateDate from './../components/ModalUpdateDate.vue'
 import ModalNewSubtask from '../components/ModalNewSubtask.vue'
+import ModalNewTask from '../components/ModalNewTask.vue'
 
 export default {
 
@@ -191,6 +201,7 @@ export default {
         ModalViewTask,
         ModalUpdateDate,
         ModalNewSubtask,
+        ModalNewTask,
     },
 
     data() {
@@ -199,16 +210,16 @@ export default {
             tasks: [],
             subtask: {},
             subtasks: [],
-            subtasktitle: null,
-            id: null,
-            title: null,
-            description: null,
-            taskdate: null,
-            status: null,
-            subtaskstatus: null,
-            taskfinishdate: null,
-            email: null,
-            task: null,
+            subtasktitle: '',
+            id: '',
+            title: '',
+            description: '',
+            taskdate: '',
+            status: '',
+            subtaskstatus: '',
+            taskfinishdate: '',
+            email: '',
+            task: '',
             msg: '',
             showModalViewTask: false,
             showModalUpdateTask: false,
@@ -289,22 +300,6 @@ export default {
                 })
         },
 
-        async createNewSubTask(id) {
-            const data = {
-                subtasktitle: this.stitle,
-                susbtaskdescription: this.sdescription,
-                task_id: id,
-            }
-
-            axios.post('http://localhost:8000/api/subtask/register', data)
-                .then(function (response) {
-                    console.log(response);
-                    this.getTasks()
-                })
-                .catch(function (error) {
-                    console.error(error);
-                });
-        },
         getTasks() {
             console.log('task');
             axios
@@ -317,9 +312,9 @@ export default {
     },
 
     async mounted() {
-        
-        this.getTasks();       
-       
+
+        this.getTasks();
+
     },
 }
 

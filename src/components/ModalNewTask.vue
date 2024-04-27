@@ -1,47 +1,51 @@
 <template>
 
-<div class="backdrop-modal" v-if="showModalNewTask">
+  <div class="backdrop-modal" v-if="showModalNewTask">
 
-<div class="modal">    
-   
+    <div class="modal">
+
       <form id="form">
 
         <div>
-          <input type="name" id="task-name" name="task-name" placeholder="Nome da tarefa" maxlength="30" v-model="tasktitle">
+          <input type="name" id="task-name" name="task-name" placeholder="Nome da tarefa" maxlength="30"
+            v-model="tasktitle">
         </div>
 
         <div>
-          <input type="name" id="task-description" name="task-description" maxlength="50" placeholder="Descrição" v-model="taskdescription">
+          <input type="name" id="task-description" name="task-description" maxlength="50" placeholder="Descrição"
+            v-model="taskdescription">
         </div>
 
         <div class="button-date">
           <img src="../../public/calendario.svg" alt="">
-          <input placeholder="Data de vencimento" class="date" type="text" onfocus="(this.type='date')" onblur="(this.type='text')" id="date" v-model="taskdate">
+          <input placeholder="Data de vencimento" class="date" type="text" onfocus="(this.type='date')"
+            onblur="(this.type='text')" id="date" v-model="taskdate">
         </div>
 
         <div class="buttons">
           <button class="white-button" @click="close()">Cancelar</button>
+          <button class="white-button" @click="getTasks2()">getTasks()</button>
           <div class="button" @click="createTask()">
             <input type="button" class="black-button" value="Criar tarefa">
           </div>
         </div>
 
       </form>
-   
-</div>
-</div>
+
+    </div>
+  </div>
 
 </template>
 
 <script>
-
+import moment from 'moment'
 import axios from 'axios'
 
 export default {
- 
+
 
   data() {
-    return {     
+    return {
       modalShowNewTask: false,
       title: null,
       description: null,
@@ -50,32 +54,30 @@ export default {
     }
   },
 
-  computed: {
-    isLogged() {
-      if (localStorage.getItem("user-info")) {
-        return true
-      } else {
-        return this.$router.push({ name: "login" })
-      }
+  props: {
+    task: Object,
+    showModalNewTask: {
+      type: Boolean,
+      required: true,
     }
   },
 
-  props: {
-        modalTitle: {
-            type: String,            
-        },
-        showModalNewTask:{
-            type: Boolean,
-            required:true,
-        }
-    },
-
   methods: {
 
-    close(){
-            this.$emit('closeModal')
-            this.$emit('update:showModalNewTask', false)            
-        },
+    close() {
+      this.$emit('update:showModalNewTask', false)
+    },
+
+    getTasks2() {
+      console.log('chamando gettask');
+      axios
+        .get('http://127.0.0.1:8000/api/task')
+        .then((response) => {
+          this.tasks = response.data
+          this.moment = moment;
+        })
+        console.log('finalizando gettask');
+    },
 
     async createTask() {
 
@@ -88,22 +90,28 @@ export default {
       }
 
       axios.post('http://localhost:8000/api/task/register', data)
-        .then(function (response) {
-          console.log(response);
-          window.location = window.location;
-          window.location.reload();
-        })
-        .catch(function (error) {
-          console.error(error);
-        });        
+      .catch(function (error) {
+                    console.error(error);
+                })
+                .then((resp) => {
+                  this.$emit('getTasksEmit')
+          this.close()
+      })
     },
 
-  }
+ 
+
+  },
+
+  // async mounted() {
+        
+  //       this.getTasks2();       
+       
+  //   },
 }
 </script>
 
 <style scoped>
-
 body {
   min-height: 100vh;
   display: grid;
@@ -226,22 +234,22 @@ a {
 }
 
 .backdrop-modal {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100vw;
-    height: 100vh;
-    overflow: hidden;
-    background-color: #0002;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  overflow: hidden;
+  background-color: #0002;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .modal {
-    width: 400px; 
-    position: relative;  
-    color: black;
+  width: 400px;
+  position: relative;
+  color: black;
 }
 
 
@@ -257,5 +265,4 @@ a {
   }
 
 }
-
 </style>

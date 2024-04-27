@@ -1,17 +1,16 @@
 <template>
-  <div>
-
-  
+  <div>  
 
     <div class="backdrop-modal" v-if="showModalNewSubtask">
     
       <form id="form">
-        {{ taskid }}
-<div>
-    <input type="name" id="task-name" name="task-name" placeholder="Nome da subtarefa"
-        maxlength="30" v-model="subtasktitle">
-</div>
-
+        <div>
+          <input type="name" id="task-name" name="task-name" placeholder="Nome da subtarefa"
+          maxlength="30" v-model="subtasktitle">
+        </div>
+        <!-- {{
+                                                moment(task.taskfinishdate).format('DD/MM/YYYY') }} -->
+                                              
 <div>
     <input type="name" id="task-description" name="task-description" maxlength="50"
         placeholder="Descrição" v-model="subtaskdescription">
@@ -19,12 +18,10 @@
 
 <div class="buttons">
     <button class="white-button" @click="close()">Cancelar</button>
-    <div class="button" @click="createNewSubTask(taskid)">
+    <div class="button" @click="createNewSubTask(task.id)">
         <input type="button" class="black-button" value="Criar subtarefa">
     </div>
 </div>
-
-
 
 </form>
    
@@ -35,44 +32,31 @@
 
 <script>
 
+import moment from 'moment'
 import axios from 'axios'
 
 export default {
-  name: "ModalNewSubtask",
 
   data() {
     return {
-      modalShowNewSubtask: false,
-      modalShow: false,
-      title: null,
-      description: null,
-      date: null,
-      users_id: null,
+      modalShowNewSubtask: false,    
+      subtasktitle: '',
+      subtaskdescription: '',    
+      taskid: '',
     }
   },
 
   props: {
-    taskid: Number,
+    task: Object,
     showModalNewSubtask:{
             type: Boolean,
             required:true,
         }
   },
 
-  computed: {
-    isLogged() {
-      if (localStorage.getItem("user-info")) {
-        return true
-      } else {
-        return this.$router.push({ name: "login" })
-      }
-    }
-  },
-
   methods: {
 
-    close(){
-            this.$emit('closeModal')
+    close(){           
             this.$emit('update:showModalNewSubtask', false)            
         },
 
@@ -83,15 +67,24 @@ export default {
                 task_id: id,
             }
 
-            axios.post('http://localhost:8000/api/subtask/register', data)
-                .then(function (response) {
-                    console.log(response);
-                    window.location = window.location;
-                })
+            axios.post('http://localhost:8000/api/subtask/register', data)               
                 .catch(function (error) {
                     console.error(error);
-                });
+                })
+                .then((resp) => {
+          this.$emit('getTasksEmit')
+          this.close()
+      })
         },
+  },
+
+  watch: {
+    showModalUpdateDate(newValue, oldValue) {
+      if(newValue){
+        this.subtasktitle = this.task.subtask.subtasktitle;
+        this.subtaskdescription = this.task.subtask.subtaskdescription;
+      }
+    }
   }
 }
 

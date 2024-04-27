@@ -5,19 +5,19 @@
 
       <form id="form">
 
-        <div>
+        <!-- <div>
           <input type="name" id="task-name" name="task-name" placeholder="Nome da tarefa" maxlength="35"
-            >
+          >
         </div>
 
         <div>
           <input type="name" id="task-description" name="task-description" maxlength="50" placeholder="Descrição"
-            >
-        </div>
+          >
+        </div> -->
 
         <div class="buttons">
           <button class="white-button" @click="close()">Cancelar</button>
-          <div class="button" @click="updateSubTask(subtaskid)"> <input type="button" class="black-button-new-subtask"
+          <div class="button" @click="updateSubTask(task.id)"> <input type="button" class="black-button-new-subtask"
               value="Atualizar subtarefa"> </div>
         </div>
       </form>
@@ -36,18 +36,15 @@ export default {
  
   data() {
     return {      
-      modalShowUpdateSubtask: false,
-      modalShow: false,
-      stitle: null,
-      sdescription: null,
-      task_id: null,
+      modalShowUpdateSubtask: false,     
+      subtasktitle: '',
+      subtaskdescription: '',
+      taskid: '',
     }
   },
 
   props: {
-    subtasktitle: String,
-    subtaskdescription: String,
-    subtaskid: Number,
+    task: Object,
     showModalUpdateSubtask:{
             type: Boolean,
             required:true,
@@ -56,8 +53,7 @@ export default {
 
   methods: {
         
-    close(){
-            this.$emit('closeModal')
+    close(){         
             this.$emit('update:showModalUpdateSubtask', false)            
         },
 
@@ -66,12 +62,22 @@ export default {
         {
           subtasktitle: this.subtasktitle,
           subtaskdescription: this.subtaskdescription,
-        });
-      if (result.status == 200) {
-        window.location = window.location;
-      }
+        })
+        .then((resp) => {
+          this.$emit('getTasksEmit')
+          this.close()
+      })
     },
 
+  },
+
+  watch: {
+    showModalUpdateSubtask(newValue, oldValue) {
+      if(newValue){
+        this.subtasktitle = this.task.subtasks.subtasktitle;
+        this.subtaskdescription = this.task.subtasks.subtaskdescription;
+      }
+    }
   }
 
 }

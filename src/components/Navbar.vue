@@ -7,7 +7,7 @@
 
             <div class="menu">
                 <img class="nav-add" src="/adicionar.svg" alt="adicionar">
-                <ModalNewTask v-model:showModalNewTask="showModalNewTask"></ModalNewTask>
+                <ModalNewTask  v-model:showModalNewTask="showModalNewTask"></ModalNewTask>
                 <button @click="showModalNewTask = true" class="hidden">Criar tarefa</button>
 
                 <ModalUser v-model:showModalUser="showModalUser"></ModalUser>

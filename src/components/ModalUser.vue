@@ -49,11 +49,11 @@ export default {
   data() {
     return {     
       modalShowUser: false,
-      name: null,
-      fullname: null,
-      email: null,
-      created: null,
-      moment: null,
+      name: '',
+      fullname: '',
+      email: '',
+      created: '',
+      moment: '',
     }
   },
 

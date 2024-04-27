@@ -2,13 +2,14 @@
 
   <div class="backdrop-modal" v-if="showModalViewTask">
 
-    <ModalUpdateSubtask v-model:showModalUpdateSubtask="showModalUpdateSubtask" :subtask="subtask"></ModalUpdateSubtask>
-  
+    <!-- <ModalUpdateSubtask v-model:showModalUpdateSubtask="showModalUpdateSubtask" :subtask="subtask"></ModalUpdateSubtask> -->
+
     <div id="main-container">
 
+
       <nav class="view-task-nav">
-        {{ taskid }}
-        <div v-if="taskfinishdate >= nowTime()">
+
+        <div v-if="task.taskfinishdate >= moment().format('YYYY-MM-DD')">
           <div class="date-view-green">
             <img src="/dataverde.svg" alt="dataverde"><Label>No prazo</Label>
           </div>
@@ -28,13 +29,13 @@
               <ul class="main-dropdown">
                 <li class="dropdown-hover">
                   <ul class="dropdown">
-                    <li class="black-li" @click="copyTask(taskid)"><img src="/copiarlink.svg" alt="copiar link"> Copiar
+                    <li class="black-li" @click="copyTask(task.id)"><img src="/copiarlink.svg" alt="copiar link"> Copiar
                       link da tarefa </li>
-                    <li class="black-li" @click="duplicateTask(taskid)"><img src="/duplicar.svg" alt="duplicar tarefa">
+                    <li class="black-li" @click="duplicateTask(task.id)"><img src="/duplicar.svg" alt="duplicar tarefa">
                       Duplicar tarefa </li>
-                    <li class="black-li" @click="printTask(taskid)"> <img src="/imprimir.svg" alt="imprimir"> Imprimir
+                    <li class="black-li" @click="printTask(task.id)"> <img src="/imprimir.svg" alt="imprimir"> Imprimir
                       tarefa </li>
-                    <li class="red-li" @click="deleteTask(taskid)"><img src="/lixeiravermelha.svg" alt="excluir">
+                    <li class="red-li" @click="deleteTask(task.id)"><img src="/lixeiravermelha.svg" alt="excluir">
                       Excluir tarefa </li>
                   </ul>
                 </li>
@@ -59,15 +60,15 @@
           <div class="task-view">
 
             <div>
-              <button class="checkbutton" @click="checkTask(taskid)">
-                <div v-if="taskstatus == 'pending'"> <img src="/public/checkvazio.svg" alt="check"> </div>
+              <button class="checkbutton" @click="checkTask(task.id)">
+                <div v-if="task.taskstatus == 'pending'"> <img src="/public/checkvazio.svg" alt="check"> </div>
                 <div v-else> <img src="/checkcheio.svg" alt="check"> </div>
               </button>
             </div>
 
             <div class="task-field-view">
-              <h2 class="title-view">{{ tasktitle }}</h2>
-              <p class="description">{{ taskdescription }}</p>
+              <h2 class="title-view">{{ task.tasktitle }}</h2>
+              <p class="description">{{ task.taskdescription }}</p>
             </div>
 
           </div>
@@ -75,13 +76,14 @@
           <h3 class="h3-sub-task">Subtarefas</h3>
 
 
-          <div class="sub-task-content" v-for="subtask in subtasks " :key="subtask.id">
+          <div v-for="(subtask, key) in task.subtasks" :key="key">
 
-            <div class="sub-task" v-if="subtask.task_id == taskid">
+
+            <div class="sub-task" v-if="subtask.task_id == task.id">
 
               <div>
                 <button class="checkbutton" @click="checkSubtask(subtask.id)">
-                  <div v-if="subtaskstatus == 'pending'">
+                  <div v-if="subtask.subtaskstatus == 'pending'">
                     <img src="/checkvazio.svg" alt="check">
                   </div>
                   <div v-else>
@@ -98,9 +100,9 @@
                 </div>
 
                 <div class="menu-tasks">
-                 
-                  <button @click="selectedTask = task, showModalUpdateSubtask = true" class="button-icon-date"><img src="/lapis.svg"
-                      alt="lapis"></button>
+
+                  <button @click="selectedTask = task, showModalUpdateSubtask = true" class="button-icon-date"><img
+                      src="/lapis.svg" alt="lapis"></button>
 
                   <button @click="deleteSubTask(subtask.id)"><img class="item-menu-task2" src="/lixeiracinza.svg"
                       alt="excluir"></button>
@@ -118,25 +120,25 @@
 
           <h4 class="title-right">Criado em</h4>
           <h5 class="info-black"><img src="/datapreto.svg" alt="calendario-preto">{{
-            moment(taskcreated).format('DD/MM/YYYY') }} às {{ moment(taskcreated).format('HH:mm') }} </h5>
+            moment(task.created_at).format('DD/MM/YYYY') }} às {{ moment(created_at).format('HH:mm') }} </h5>
 
           <h4 class="title-right">Data de vencimento</h4>
-          <div v-if="taskfinishdate >= moment().format('YYYY-MM-DD')">
+          <div v-if="task.taskfinishdate >= moment().format('YYYY-MM-DD')">
             <h5 class="info-green"><img src="/dataverde.svg" alt="calendario-verde">{{
-              moment(taskfinishdate).format('DD/MM/YYYY') }} </h5>
+              moment(task.taskfinishdate).format('DD/MM/YYYY') }} </h5>
           </div>
 
           <div v-else>
             <h5 class="info-red"><img src="/datavermelho.svg" alt="calendario-vermelho">{{
-              moment(taskfinishdate).format('DD/MM/YYYY') }} </h5>
+              moment(task.taskfinishdate).format('DD/MM/YYYY') }} </h5>
           </div>
 
           <h4 class="title-right">Modificado em</h4>
           <h5 class="info-black"><img src="/datapreto.svg" alt="calendario-preto">{{
-            moment(taskupdated).format('DD/MM/YYYY') }} às {{ moment(taskupdated).format('HH:mm') }} </h5>
+            moment(task.updated_at).format('DD/MM/YYYY') }} às {{ moment(task.updated_at).format('HH:mm') }} </h5>
 
           <h4 class="title-right">ID da tarefa</h4>
-          <h5 class="info-black">{{ taskid }}</h5>
+          <h5 class="info-black">{{ task.id }}</h5>
 
         </div>
 
@@ -162,130 +164,129 @@ export default {
     return {
       selectedTask: {},
       tasks: [],
-      subtask: null,
+      subtask: {},
       subtasks: [],
-      stitle: null,
-      id: null,
-      title: null,
-      description: null,
-      date: null,
-      status: null,
-      sstatus: null,
+      stitle: '',
+      id: '',
+      tasktitle: '',
+      taskdescription: '',
+      date: '',
+      taskstatus: '',
+      subtaskstatus: '',
       showModalUpdateSubtask: false,
     }
   },
 
   props: {
-    tasktitle: String,
-    taskfinishdate: Date,
-    taskcreated: Date,
-    taskupdated: Date,
-    taskdescription: String,
-    taskid: Number,
-    taskstatus: String,
-    subtaskid: Number,
-    subtasktask_id: Number,
-    subtasktitle: String,
-    subtaskdescription: String,
-    subtasktaskid: Number,
-    taskuserid: Number,
+    task: Object,
     showModalViewTask: {
       type: Boolean,
       required: true,
     },
   },
 
-  mounted(){
+  mounted() {
     this.date = this.task.date;
     this.taskid = this.task.id;
+    this.moment = moment;
   },
+
+
+
 
 
   methods: {
 
     close() {
-      this.$emit('closeModal')
       this.$emit('update:showModalViewTask', false)
     },
 
-    nowTime() {
-      return moment().format('DD/MM/YYYY')
-    },
 
-    async duplicateTask(taskid) {
-      const user = JSON.parse(localStorage.getItem("user-info"))
-      const data = {
-        title: this.tasktitle,
-        description: this.taskdescription,
-        finishdate: this.taskfinishdate,
-        status: this.taskstatus,
-        users_id: taskuserid,
-      }
 
-      const result = axios.post('http://localhost:8000/api/task/register', data)
-        .then(function (response) {
-          const taskid = response.data.id
+    // async duplicateTask(taskid) {
+    //   const user = JSON.parse(localStorage.getItem("user-info"))
+    //   const data = {
+    //     title: this.tasktitle,
+    //     description: this.taskdescription,
+    //     finishdate: this.taskfinishdate,
+    //     status: this.taskstatus,
+    //     users_id: taskuserid,
+    //   }
 
-          const resultsub = axios.get(`http://localhost:8000/api/subtask/taskid/${taskid}`)
-            .then(function (responsesub) {
-              console.log(responsesub.data[1]);
+    //   const result = axios.post('http://localhost:8000/api/task/register', data)
+    //     .then(function (response) {
+    //       const taskid = response.data.id
 
-              for (let i = 0; i < responsesub.data.length; i++) {
-                const datasub = {
-                  subtasktitle: responsesub.data[i].subtasktitle,
-                  subtaskdescription: responsesub.data[i].subtaskdescription,
-                  task_id: taskid,
-                }
+    //       const resultsub = axios.get(`http://localhost:8000/api/subtask/taskid/${taskid}`)
+    //         .then(function (responsesub) {
+    //           console.log(responsesub.data[1]);
 
-                const resultsubsend = axios.post('http://localhost:8000/api/subtask/register', datasub)
-                  .then(function (response) {
-                    console.log(response);
-                  })
+    //           for (let i = 0; i < responsesub.data.length; i++) {
+    //             const datasub = {
+    //               subtasktitle: responsesub.data[i].subtasktitle,
+    //               subtaskdescription: responsesub.data[i].subtaskdescription,
+    //               task_id: taskid,
+    //             }
 
-              }
-            })
-        })
-        .catch(function (error) {
-          console.error(error);
-        });
-    },
+    //             const resultsubsend = axios.post('http://localhost:8000/api/subtask/register', datasub)
+    //               .then(function (response) {
+    //                 console.log(response);
+    //               })
+
+    //           }
+    //         })
+    //     })
+    //     .catch(function (error) {
+    //       console.error(error);
+    //     });
+    // },
 
     async checkTask(id) {
       const result = await axios.get(`http://localhost:8000/api/task/${id}`)
-      if (result.data.status == "pending") {
-        const result = await axios.put(`http://localhost:8000/api/task/${id}/updatetaskstatus`,
+      if (result.data.taskstatus == "pending") {
+        result = await axios.put(`http://localhost:8000/api/task/${id}/updatetaskstatus`,
           {
-            status: "completed"
-          })
+            taskstatus: "completed"
+          }).then((resp) => {
+          this.$emit('getTasksEmit')
+          this.close()
+      })
       } else {
-        const result = await axios.put(`http://localhost:8000/api/task/${id}/updatetaskstatus`,
+        result = await axios.put(`http://localhost:8000/api/task/${id}/updatetaskstatus`,
           {
-            status: "pending"
-          })
+            taskstatus: "pending"
+          }).then((resp) => {
+          this.$emit('getTasksEmit')
+          this.close()
+      })
       }
 
-      if (result.status == 200) {
-        window.location = window.location;
-      }
+      
     },
 
     async checkSubtask(id) {
       const result = await axios.get(`http://localhost:8000/api/subtask/${id}`)
-      if (result.data.sstatus == "pending") {
-        const result = await axios.put(`http://localhost:8000/api/subtask/${id}/updatesubtaskstatus`,
+      console.log(result.data.subtaskstatus)
+      if (result.data.subtaskstatus == "pending") {
+        result = await axios.put(`http://localhost:8000/api/subtask/${id}/updatesubtaskstatus`,
           {
-            sstatus: "completed"
+            subtaskstatus: "completed"
 
-          })
+          })    .then((resp) => {
+          this.$emit('getTasksEmit')
+          this.close()
+      })
       } else {
-        const result = await axios.put(`http://localhost:8000/api/subtask/${id}/updatesubtaskstatus`,
+        result = await axios.put(`http://localhost:8000/api/subtask/${id}/updatesubtaskstatus`,
           {
-            sstatus: "pending"
+            subtaskstatus: "pending"
           })
+          .then((resp) => {
+          this.$emit('getTasksEmit')
+          this.close()
+      })
       }
-      if (result.status == 200) {
-        window.location = window.location;
-      }
+
     },
 
     async printTask(id) {
@@ -475,6 +476,7 @@ form:hover .dropdown-hover {
 .checkbutton {
   border: none;
   background-color: transparent;
+  cursor: pointer;
 }
 
 .task-field {

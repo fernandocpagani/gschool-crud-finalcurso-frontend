@@ -64,7 +64,7 @@ export default {
     },
 
   },
-  
+
   watch: {
     showModalUpdateDate(newValue, oldValue) {
       if(newValue){
