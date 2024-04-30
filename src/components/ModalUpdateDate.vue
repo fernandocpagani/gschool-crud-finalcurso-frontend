@@ -113,10 +113,11 @@ a {
 }
 
 .button-date {
+  display: flex;
+  flex-direction: row; 
   margin-left: 25px;
-  width: 220px;
-  height: 40px;
-  box-sizing: border-box;
+  width: 180px;
+  height: 40px;  
   border: solid 1px #e5e5e5;
   background-color: #fff;
   margin-bottom: 15px;
@@ -133,6 +134,9 @@ a {
 .date {
   border: none;
   font-size: 14px;
+  margin: 10px 0;
+  padding: 10px 0;
+  width: 100px;
 }
 
 .buttons-date {

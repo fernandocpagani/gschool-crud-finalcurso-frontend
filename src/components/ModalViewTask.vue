@@ -2,7 +2,8 @@
 
   <div class="backdrop-modal" v-if="showModalViewTask">
 
-    <!-- <ModalUpdateSubtask v-model:showModalUpdateSubtask="showModalUpdateSubtask" :subtask="subtask"></ModalUpdateSubtask> -->
+    <!-- <ModalUpdateSubtask @getTasksEmit="getTasks" v-model:showModalUpdateSubtask="showModalUpdateSubtask"
+        :subtask="subtaskId"></ModalUpdateSubtask> -->
 
     <div id="main-container">
 
@@ -101,7 +102,7 @@
 
                 <div class="menu-tasks">
 
-                  <button @click="selectedTask = task, showModalUpdateSubtask = true" class="button-icon-date"><img
+                  <button  class="button-icon-date"><img
                       src="/lapis.svg" alt="lapis"></button>
 
                   <button @click="deleteSubTask(subtask.id)"><img class="item-menu-task2" src="/lixeiracinza.svg"
@@ -163,6 +164,7 @@ export default {
   data() {
     return {
       selectedTask: {},
+      selectedSubtask: {},
       tasks: [],
       subtask: {},
       subtasks: [],
@@ -200,6 +202,11 @@ export default {
     close() {
       this.$emit('update:showModalViewTask', false)
     },
+
+    // closeAndOpenModal(){
+    //   this.$emit('update:showModalUpdateSubtask', true)
+    //   this.$emit('update:showModalViewTask', false)
+    // },
 
 
 
@@ -536,12 +543,17 @@ form:hover .dropdown-hover {
   box-sizing: border-box;
   padding: 10px 0;
   margin-left: 70px;
-  width: 470px;
+  width: 480px;
 }
 
 .sub-task-item {
   display: flex;
   flex-direction: row;
+  justify-content: space-between;
+}
+
+.subtask-text{
+  width: 370px;
 }
 
 .title-sub-task {

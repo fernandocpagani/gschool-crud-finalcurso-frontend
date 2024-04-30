@@ -63,6 +63,8 @@ export default {
                     taskdescription: this.description,
                 })
                 .then((resp) => {
+                  this.subtasktitle = "";
+                  this.subtaskdescription = "";
           this.$emit('getTasksEmit')
           this.close()
       })
@@ -73,7 +75,8 @@ export default {
   watch: {
     showModalUpdateDate(newValue, oldValue) {
       if(newValue){
-        this.date = this.task.taskfinishdate;
+        this.taskdescription = this.task.taskdescription;
+        this.taskdescription = this.task.taskdescription;
       }
     }
   }

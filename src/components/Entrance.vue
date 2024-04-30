@@ -1,12 +1,12 @@
 <template>
     <div>
-        <ModalViewTask @getTasksEmit="getTasks" v-model:showModalViewTask="showModalViewTask" :task="selectedTask"></ModalViewTask>
+        <ModalViewTask @getTasksEmit="getTasks" v-model:showModalViewTask="showModalViewTask", :showModalUpdateSubtask="showModalUpdateSubtask" :task="selectedTask"></ModalViewTask>
         <ModalUpdateTask @getTasksEmit="getTasks" v-model:showModalUpdateTask="showModalUpdateTask"
             :task="selectedTask"></ModalUpdateTask>
         <ModalUpdateDate @getTasksEmit="getTasks" v-model:showModalUpdateDate="showModalUpdateDate"
             :task="selectedTask"></ModalUpdateDate>
         <ModalUpdateSubtask @getTasksEmit="getTasks" v-model:showModalUpdateSubtask="showModalUpdateSubtask"
-            :subtask="selectedTask"></ModalUpdateSubtask>
+        :subtask="subtaskId"></ModalUpdateSubtask>
         <ModalNewSubtask @getTasksEmit="getTasks" v-model:showModalNewSubtask="showModalNewSubtask"
             :task="selectedTask"></ModalNewSubtask>
         <ModalNewTask @getTasksEmit="getTasks" v-model:showModalNewTask="showModalNewTask" :task="selectedTask">
@@ -39,12 +39,9 @@
 
                             <div class="task-field">
 
-
                                 <button @click="selectedTask = task, showModalViewTask = true" class="tasktitle"> {{
                                     task.tasktitle
                                 }}</button>
-
-                                {{ task.id }}
 
                                 <p class="description">{{ task.taskdescription }}</p>
                                 <div class="date-counter">
@@ -121,11 +118,12 @@
                                         <!-- COLLAPSE SUBTASK -->
 
                                         <div class="subtask-text">
+                                          
 
                                             <button @click="showCollapse(subtask.id)" class="title-subtask">{{
                                                 subtask.subtasktitle }}</button>
 
-                                            <div class="description-subtask" v-if="collapsesubtask == true">{{
+                                            <div class="description-subtask" v-if="collapsesubtask == true && subtask.id == newId">{{
                                                 subtask.subtaskdescription }}</div>
 
                                         </div>
@@ -134,7 +132,9 @@
 
                                     <div class="menu-subtasks">
 
-                                        <button @click="selectedTask = task, showModalUpdateSubtask = true"
+                                       
+
+                                        <button @click="subtaskId = subtask.id, showModalUpdateSubtask = true"
                                             class="button-icon-date-margin-subtask"><img src="/lapis.svg"
                                                 alt="lapis"></button>
 
@@ -207,6 +207,8 @@ export default {
     data() {
         return {
             selectedTask: {},
+            selectedSubtask: {},
+            subtaskId:{},
             tasks: [],
             subtask: {},
             subtasks: [],
@@ -227,16 +229,20 @@ export default {
             showModalNewSubtask: false,
             showModalUpdateSubtask: false,
             collapsesubtask: false,
+            newId: '',           
         }
     },
 
     methods: {
 
         async showCollapse(id) {
-            if (this.collapsesubtask == true) {
-                this.collapsesubtask = false
+            const newId = id
+            if (this.collapsesubtask == true ) {
+                this.collapsesubtask = false                
+                this.newId = newId;
             } else {
-                this.collapsesubtask = true
+                this.collapsesubtask = true                           
+                this.newId = newId;
             }
         },
 

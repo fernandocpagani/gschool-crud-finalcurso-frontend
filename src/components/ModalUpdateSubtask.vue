@@ -5,19 +5,19 @@
 
       <form id="form">
 
-        <!-- <div>
+        <div>
           <input type="name" id="task-name" name="task-name" placeholder="Nome da tarefa" maxlength="35"
-          >
+          v-model="subtasktitle" >
         </div>
 
         <div>
-          <input type="name" id="task-description" name="task-description" maxlength="50" placeholder="Descrição"
+          <input type="name" id="task-description" name="task-description" maxlength="50" placeholder="Descrição" v-model="subtaskdescription"
           >
-        </div> -->
-
+        </div>
+   
         <div class="buttons">
           <button class="white-button" @click="close()">Cancelar</button>
-          <div class="button" @click="updateSubTask(task.id)"> <input type="button" class="black-button-new-subtask"
+          <div class="button" @click="updateSubTask(subtask)"> <input type="button" class="black-button-new-subtask"
               value="Atualizar subtarefa"> </div>
         </div>
       </form>
@@ -35,7 +35,7 @@ import axios from 'axios'
 export default {
  
   data() {
-    return {      
+    return {       
       modalShowUpdateSubtask: false,     
       subtasktitle: '',
       subtaskdescription: '',
@@ -44,7 +44,7 @@ export default {
   },
 
   props: {
-    task: Object,
+    subtask: Number,
     showModalUpdateSubtask:{
             type: Boolean,
             required:true,
@@ -58,6 +58,7 @@ export default {
         },
 
     async updateSubTask(id) {
+      console.log(id);
       const result = await axios.put(`http://localhost:8000/api/subtask/${id}/update`,
         {
           subtasktitle: this.subtasktitle,
@@ -71,14 +72,14 @@ export default {
 
   },
 
-  watch: {
-    showModalUpdateSubtask(newValue, oldValue) {
-      if(newValue){
-        this.subtasktitle = this.task.subtasks.subtasktitle;
-        this.subtaskdescription = this.task.subtasks.subtaskdescription;
-      }
-    }
-  }
+  // watch: {
+  //   showModalUpdateSubtask(newValue, oldValue) {
+  //     if(newValue){
+  //       this.subtasktitle = this.task.subtasks.subtasktitle;
+  //       this.subtaskdescription = this.task.subtasks.subtaskdescription;
+  //     }
+  //   }
+  // }
 
 }
 

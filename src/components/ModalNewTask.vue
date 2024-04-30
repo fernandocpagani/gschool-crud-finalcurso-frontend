@@ -23,8 +23,7 @@
         </div>
 
         <div class="buttons">
-          <button class="white-button" @click="close()">Cancelar</button>
-          <button class="white-button" @click="getTasks2()">getTasks()</button>
+          <button class="white-button" @click="close()">Cancelar</button>         
           <div class="button" @click="createTask()">
             <input type="button" class="black-button" value="Criar tarefa">
           </div>
@@ -38,7 +37,6 @@
 </template>
 
 <script>
-import moment from 'moment'
 import axios from 'axios'
 
 export default {
@@ -67,19 +65,8 @@ export default {
     close() {
       this.$emit('update:showModalNewTask', false)
     },
-
-    getTasks2() {
-      console.log('chamando gettask');
-      axios
-        .get('http://127.0.0.1:8000/api/task')
-        .then((response) => {
-          this.tasks = response.data
-          this.moment = moment;
-        })
-        console.log('finalizando gettask');
-    },
-
-    async createTask() {
+   
+    async  createTask() {
 
       const user = JSON.parse(localStorage.getItem("user-info"))
       const data = {
@@ -92,22 +79,15 @@ export default {
       axios.post('http://localhost:8000/api/task/register', data)
       .catch(function (error) {
                     console.error(error);
+                    
                 })
                 .then((resp) => {
-                  this.$emit('getTasksEmit')
-          this.close()
+                  window.location.reload();
       })
     },
-
- 
-
   },
 
-  // async mounted() {
-        
-  //       this.getTasks2();       
-       
-  //   },
+
 }
 </script>
 

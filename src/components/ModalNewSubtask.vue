@@ -8,9 +8,7 @@
           <input type="name" id="task-name" name="task-name" placeholder="Nome da subtarefa"
           maxlength="30" v-model="subtasktitle">
         </div>
-        <!-- {{
-                                                moment(task.taskfinishdate).format('DD/MM/YYYY') }} -->
-                                              
+                                                   
 <div>
     <input type="name" id="task-description" name="task-description" maxlength="50"
         placeholder="Descrição" v-model="subtaskdescription">
@@ -32,7 +30,6 @@
 
 <script>
 
-import moment from 'moment'
 import axios from 'axios'
 
 export default {
@@ -72,6 +69,8 @@ export default {
                     console.error(error);
                 })
                 .then((resp) => {
+                  this.subtasktitle = "";
+                  this.subtaskdescription = "";
           this.$emit('getTasksEmit')
           this.close()
       })
