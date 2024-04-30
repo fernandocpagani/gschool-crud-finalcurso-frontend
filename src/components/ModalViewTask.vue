@@ -2,10 +2,11 @@
 
   <div class="backdrop-modal" v-if="showModalViewTask">
 
-    <!-- <ModalUpdateSubtask @getTasksEmit="getTasks" v-model:showModalUpdateSubtask="showModalUpdateSubtask"
-        :subtask="subtaskId"></ModalUpdateSubtask> -->
-
-    <div id="main-container">
+    
+    <ModalUpdateSubtask @getTasksEmit="getTasks" v-model:showModalUpdateSubtask="showModalUpdateSubtask"
+    :subtask="subtaskId"></ModalUpdateSubtask>
+    
+    <div id="main-container" v-if="showMaincontainer">
 
 
       <nav class="view-task-nav">
@@ -102,7 +103,7 @@
 
                 <div class="menu-tasks">
 
-                  <button  class="button-icon-date"><img
+                  <button  @click="subtaskId = subtask.id, closeAndOpenModal()  " class="button-icon-date"><img
                       src="/lapis.svg" alt="lapis"></button>
 
                   <button @click="deleteSubTask(subtask.id)"><img class="item-menu-task2" src="/lixeiracinza.svg"
@@ -176,6 +177,7 @@ export default {
       taskstatus: '',
       subtaskstatus: '',
       showModalUpdateSubtask: false,
+      showMaincontainer: true,
     }
   },
 
@@ -201,52 +203,33 @@ export default {
 
     close() {
       this.$emit('update:showModalViewTask', false)
+      this.$emit('getTasksEmit')  
     },
 
-    // closeAndOpenModal(){
-    //   this.$emit('update:showModalUpdateSubtask', true)
-    //   this.$emit('update:showModalViewTask', false)
-    // },
+    closeAndOpenModal(){
+      this.showModalUpdateSubtask = true
+      this.showMaincontainer= false      
+    },   
+     
+    async duplicateTask(id){
+      const user = JSON.parse(localStorage.getItem("user-info"))
+       const data = {
+        tasktitle: this.task.tasktitle,
+        taskdescription: this.task.taskdescription,
+        taskfinishdate: this.task.taskfinishdate,    
+        users_id: user.user.id,
+      }
 
+      axios.post(`http://127.0.0.1:8000/api/task/${id}/copytask`, data)
+      .catch(function (error) {
+                    console.error(error);
+                    
+                })
+                .then((resp) => {
+                  this.close()
+      })
+    },
 
-
-    // async duplicateTask(taskid) {
-    //   const user = JSON.parse(localStorage.getItem("user-info"))
-    //   const data = {
-    //     title: this.tasktitle,
-    //     description: this.taskdescription,
-    //     finishdate: this.taskfinishdate,
-    //     status: this.taskstatus,
-    //     users_id: taskuserid,
-    //   }
-
-    //   const result = axios.post('http://localhost:8000/api/task/register', data)
-    //     .then(function (response) {
-    //       const taskid = response.data.id
-
-    //       const resultsub = axios.get(`http://localhost:8000/api/subtask/taskid/${taskid}`)
-    //         .then(function (responsesub) {
-    //           console.log(responsesub.data[1]);
-
-    //           for (let i = 0; i < responsesub.data.length; i++) {
-    //             const datasub = {
-    //               subtasktitle: responsesub.data[i].subtasktitle,
-    //               subtaskdescription: responsesub.data[i].subtaskdescription,
-    //               task_id: taskid,
-    //             }
-
-    //             const resultsubsend = axios.post('http://localhost:8000/api/subtask/register', datasub)
-    //               .then(function (response) {
-    //                 console.log(response);
-    //               })
-
-    //           }
-    //         })
-    //     })
-    //     .catch(function (error) {
-    //       console.error(error);
-    //     });
-    // },
 
     async checkTask(id) {
       const result = await axios.get(`http://localhost:8000/api/task/${id}`)
@@ -267,7 +250,6 @@ export default {
           this.close()
       })
       }
-
       
     },
 
@@ -309,17 +291,19 @@ export default {
     async deleteTask(taskid) {
       axios.delete(`http://localhost:8000/api/task/${taskid}/delete`)
         .then(() => {
-          window.location.reload();;
+          this.$emit('getTasksEmit')
+          this.close()
         })
     },
 
     async deleteSubTask(id) {
       axios.delete(`http://localhost:8000/api/subtask/${id}/delete`)
         .then(() => {
-          window.location.reload();
+          this.$emit('getTasksEmit')
+          this.close()
         })
     },
-  }
+  },
 
 }
 

@@ -1,5 +1,7 @@
 <template>
   <div>
+
+
  
     <div class="backdrop-modal" v-if="showModalUpdateSubtask">
 
@@ -32,8 +34,10 @@
 
 import axios from 'axios'
 
+
 export default {
- 
+
+
   data() {
     return {       
       modalShowUpdateSubtask: false,     
@@ -53,33 +57,23 @@ export default {
 
   methods: {
         
-    close(){         
-            this.$emit('update:showModalUpdateSubtask', false)            
+    close(){      
+      this.$emit('update:showModalUpdateSubtask', false)               
+      this.$emit('update:showModalViewTask', false)       
         },
 
-    async updateSubTask(id) {
-      console.log(id);
+    async updateSubTask(id) {     
       const result = await axios.put(`http://localhost:8000/api/subtask/${id}/update`,
         {
           subtasktitle: this.subtasktitle,
           subtaskdescription: this.subtaskdescription,
         })
         .then((resp) => {
-          this.$emit('getTasksEmit')
-          this.close()
+          window.location.reload();
       })
     },
 
   },
-
-  // watch: {
-  //   showModalUpdateSubtask(newValue, oldValue) {
-  //     if(newValue){
-  //       this.subtasktitle = this.task.subtasks.subtasktitle;
-  //       this.subtaskdescription = this.task.subtasks.subtaskdescription;
-  //     }
-  //   }
-  // }
 
 }
 

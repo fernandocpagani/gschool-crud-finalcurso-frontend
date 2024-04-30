@@ -52,8 +52,7 @@ export default {
     }
   },
 
-  props: {
-    task: Object,
+  props: {    
     showModalNewTask: {
       type: Boolean,
       required: true,
@@ -86,9 +85,8 @@ export default {
       })
     },
   },
-
-
 }
+
 </script>
 
 <style scoped>

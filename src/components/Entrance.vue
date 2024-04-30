@@ -1,12 +1,12 @@
 <template>
     <div>
-        <ModalViewTask @getTasksEmit="getTasks" v-model:showModalViewTask="showModalViewTask", :showModalUpdateSubtask="showModalUpdateSubtask" :task="selectedTask"></ModalViewTask>
+        <ModalViewTask @getTasksEmit="getTasks" v-model:showModalViewTask="showModalViewTask" :task="selectedTask"> </ModalViewTask>
         <ModalUpdateTask @getTasksEmit="getTasks" v-model:showModalUpdateTask="showModalUpdateTask"
             :task="selectedTask"></ModalUpdateTask>
         <ModalUpdateDate @getTasksEmit="getTasks" v-model:showModalUpdateDate="showModalUpdateDate"
             :task="selectedTask"></ModalUpdateDate>
         <ModalUpdateSubtask @getTasksEmit="getTasks" v-model:showModalUpdateSubtask="showModalUpdateSubtask"
-        :subtask="subtaskId"></ModalUpdateSubtask>
+        :subtask="subtaskId"  v-model:showModalViewTask="showModalViewTask" ></ModalUpdateSubtask>
         <ModalNewSubtask @getTasksEmit="getTasks" v-model:showModalNewSubtask="showModalNewSubtask"
             :task="selectedTask"></ModalNewSubtask>
         <ModalNewTask @getTasksEmit="getTasks" v-model:showModalNewTask="showModalNewTask" :task="selectedTask">
