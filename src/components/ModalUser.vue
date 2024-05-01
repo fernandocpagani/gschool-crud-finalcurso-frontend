@@ -17,8 +17,7 @@
             <h5 class="info-black">{{ email }}</h5>
 
             <h4 class="title-info">Conta criada em</h4>
-            <h5 class="info-black"><img src="/calendario.svg" alt="calendario-preto"> {{
-              moment(created).format('DD/MM/YYYY') }}</h5>
+            <h5 class="info-black"><img src="/calendario.svg" alt="calendario-preto"> {{moment(created).format('DD/MM/YYYY') }}</h5>
 
             <h4 class="title-info">ID da conta</h4>
             <h5 class="info-black">{{ id }}</h5>
@@ -44,10 +43,9 @@
 import moment from 'moment'
 
 export default {
-
-
+  
   data() {
-    return {     
+    return {
       modalShowUser: false,
       name: '',
       fullname: '',
@@ -57,12 +55,12 @@ export default {
     }
   },
 
-  props: {     
-        showModalUser:{
-            type: Boolean,
-            required:true,
-        }
-    },
+  props: {
+    showModalUser: {
+      type: Boolean,
+      required: true,
+    }
+  },
 
   mounted() {
     let user = localStorage.getItem('user-info');
@@ -76,9 +74,9 @@ export default {
 
   methods: {
 
-close(){
-        this.$emit('closeModal')
-        this.$emit('update:showModalUser', false)            
+    close() {
+      this.$emit('closeModal')
+      this.$emit('update:showModalUser', false)
     },
   }
 }
@@ -154,22 +152,21 @@ img {
 }
 
 .backdrop-modal {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100vw;
-    height: 100vh;
-    overflow: hidden;
-    background-color: #0002;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  overflow: hidden;
+  background-color: #0002;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .modal {
-    width: 400px; 
-    position: relative;  
-    color: black;
+  width: 400px;
+  position: relative;
+  color: black;
 }
-
 </style>

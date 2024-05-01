@@ -1,161 +1,152 @@
 <template>
     <div>
-        <ModalViewTask @getTasksEmit="getTasks" v-model:showModalViewTask="showModalViewTask" :task="selectedTask"> </ModalViewTask>
+
+        <ModalViewTask @getTasksEmit="getTasks" v-model:showModalViewTask="showModalViewTask" :task="selectedTask">
+        </ModalViewTask>
         <ModalUpdateTask @getTasksEmit="getTasks" v-model:showModalUpdateTask="showModalUpdateTask"
             :task="selectedTask"></ModalUpdateTask>
         <ModalUpdateDate @getTasksEmit="getTasks" v-model:showModalUpdateDate="showModalUpdateDate"
             :task="selectedTask"></ModalUpdateDate>
         <ModalUpdateSubtask @getTasksEmit="getTasks" v-model:showModalUpdateSubtask="showModalUpdateSubtask"
-        :subtask="subtaskId"  v-model:showModalViewTask="showModalViewTask" ></ModalUpdateSubtask>
+            :subtask="subtaskId" v-model:showModalViewTask="showModalViewTask"></ModalUpdateSubtask>
         <ModalNewSubtask @getTasksEmit="getTasks" v-model:showModalNewSubtask="showModalNewSubtask"
             :task="selectedTask"></ModalNewSubtask>
         <ModalNewTask @getTasksEmit="getTasks" v-model:showModalNewTask="showModalNewTask" :task="selectedTask">
         </ModalNewTask>
 
-        <div class="main-content">
+        <div class="full-content">
 
-            <h3 class="title">Entrada</h3>
+            <div class="main-content-left">
 
-            <div v-for="task in tasks" :key="task.id">
-                <div v-if="task.users_id == userId()">
+                <div class="menu-left">
+                    <button class="first-menu-button" @click="getTasks()"><img src="../../public/entrada.svg" alt="">Entrada</button>
+                    <button class="menu-button" @click="getTasksToday()"><img src="../../public/tarefasdehoje.svg" alt="">Tarefas de hoje</button>
+                    <button class="menu-button" @click="getTasksLate()"><img src="../../public/vencidos.svg" alt="">Vencidos</button>
+                </div>
 
-                    <!-- TASKS -->
-
-                    <div class="tasks">
-
-                        <div class="task">
-
-                            <div>
-                               
-                                <button class="checkbutton" @click="checkTask(task.id)">
-                                    <div v-if="task.taskstatus == 'pending'">
-                                        <img src="/checkvazio.svg" alt="check">
-                                    </div>
-                                    <div v-else>
-                                        <img src="/checkcheio.svg" alt="check">
-                                    </div>
-                                </button>
-                            </div>
-
-                            <div class="task-field">
-
-                                <button @click="selectedTask = task, showModalViewTask = true" class="tasktitle"> {{
-                                    task.tasktitle
-                                }}</button>
-
-                                <p class="description">{{ task.taskdescription }}</p>
-                                <div class="date-counter">
-
-                                    <div v-if="task.taskfinishdate >= moment().format('YYYY-MM-DD')">
-                                        <div class="green-date">
-                                            <img src="/dataverde.svg" alt="">{{
-                                                moment(task.taskfinishdate).format('DD/MM/YYYY') }}
-                                        </div>
-                                    </div>
-
-                                    <div v-else>
-                                        <div class="red-date">
-                                            <img src="/datavermelho.svg" alt=""> {{
-                                                moment(task.taskfinishdate).format('DD/MM/YYYY') }}
-                                        </div>
-                                    </div>
-
-                                    <div class="counter">
-                                        {{ task.subtasks.filter(sub => sub.task_id == task.id && sub.subtaskstatus ==
-                                            "completed").length }}/{{ task.subtasks.filter(sub => sub.task_id ==
-                                            task.id).length
-                                        }}
-                                        
-                                    </div>
-                                </div>
-
-                            </div>
-
-
-
-
-                            <div class="menu-tasks">
-
-                                <button @click="selectedTask = task, showModalUpdateTask = true"
-                                    class="button-icon-date"><img src="/lapis.svg" alt="lapis"></button>
-
-
-                                <button @click="selectedTask = task, showModalUpdateDate = true"
-                                    class="button-icon-date-margin"><img src="/calendario.svg"
-                                        alt="calendario"></button>
-
-                                <button @click="deleteTask(task.id)" class="trash-button"><img src="/lixeiracinza.svg"
-                                        alt="excluir"></button>
-
-                            </div>
-
-                        </div>
-
-                        <!-- SUBTASK -->
-
-                        <div class="main-subtask-content">
-
-                            <div v-for="subtask in task.subtasks" :key="task.subtasks.id">
-
-                                <div class="sub-task-content">
-
-                                    <div class="sub-task">
-
-                                        <div>
-                                            <button class="checkbutton" @click="checkSubtask(subtask.id)">
-
-                                                <div v-if="subtask.subtaskstatus == 'pending'">
-                                                    <img src="/checkvazio.svg" alt="check">
-                                                </div>
-
-                                                <div v-else>
-                                                    <img src="/checkcheio.svg" alt="check">
-                                                </div>
-
-                                            </button>
-                                        </div>
-
-                                        <!-- COLLAPSE SUBTASK -->
-
-                                        <div class="subtask-text">
-                                          
-
-                                            <button @click="showCollapse(subtask.id)" class="title-subtask">{{
-                                                subtask.subtasktitle }}</button>
-
-                                            <div class="description-subtask" v-if="collapsesubtask == true && subtask.id == newId">{{
-                                                subtask.subtaskdescription }}</div>
-
-                                        </div>
-
-                                    </div>
-
-                                    <div class="menu-subtasks">
-
-                                       
-
-                                        <button @click="subtaskId = subtask.id, showModalUpdateSubtask = true"
-                                            class="button-icon-date-margin-subtask"><img src="/lapis.svg"
-                                                alt="lapis"></button>
-
-                                        <button class="trash-button"> <img src="/lixeiracinza.svg" alt="excluir"
-                                                @click="deleteSubTask(subtask.id)"></button>
-                                    </div>
-
-                                </div>
-
-                            </div>
-
-                        </div>
-
+                <footer class="footer-item">
+                    <h6>Fernando Códolo Pagani </h6>
+                    <h6>&copy 2024</h6>
+                    <div class="icons">
+                        <a href="https://www.linkedin.com/in/fernandocpagani/" target="_blank"><img src="../../public/linkedin.svg" alt="icone linkedin"></a>
+                        <a href="https://www.instagram.com/fernandocpagani/" target="_blank"><img src="../../public/instagram.svg" alt="icone instagram"></a>
+                        <a href="https://www.facebook.com/fernando.codolopagani/" target="_blank"><img src="../../public/facebook.svg" alt="icone facebook"></a>
+                        <a href="https://github.com/fernandocpagani" target="_blank"><img src="../../public/github.svg" alt="icone gihub"></a>
                     </div>
 
-                    <div class="add-task">
+                </footer>
 
+            </div>
 
-                        <button @click="selectedTask = task, showModalNewSubtask = true"
-                            class="button-icon-date subtask-text"><img src="/adicionarcinza.svg" alt="adicionar">Criar
-                            subtarefa</button>
+            <div class="main-content-right">
+
+                <h3 class="title">Entrada</h3>
+
+                <div v-for="task in tasks" :key="task.id">
+                    <div v-if="task.users_id == userId()">
+
+                        <!-- TASKS -->
+
+                        <div class="tasks">
+
+                            <div class="task">
+
+                                <div>
+                                    <button class="checkbutton" @click="checkTask(task.id)">
+                                        <div v-if="task.taskstatus == 'pending'">
+                                            <img src="/checkvazio.svg" alt="check">
+                                        </div>
+                                        <div v-else>
+                                            <img src="/checkcheio.svg" alt="check">
+                                        </div>
+                                    </button>
+                                </div>
+
+                                <div class="task-field">
+
+                                    <button @click="selectedTask = task, showModalViewTask = true" class="tasktitle"> {{task.tasktitle}}</button>
+                                    <p class="description">{{ task.taskdescription }}</p>
+
+                                    <div class="date-counter">
+
+                                        <div v-if="task.taskfinishdate >= moment().format('YYYY-MM-DD')">
+                                            <div class="green-date">
+                                                <img src="/dataverde.svg" alt="">{{
+                                                    moment(task.taskfinishdate).format('DD/MM/YYYY') }}
+                                            </div>
+                                        </div>
+
+                                        <div v-else>
+                                            <div class="red-date">
+                                                <img src="/datavermelho.svg" alt=""> {{
+                                                    moment(task.taskfinishdate).format('DD/MM/YYYY') }}
+                                            </div>
+                                        </div>
+
+                                        <div class="counter">
+                                            {{ task.subtasks.filter(sub => sub.task_id == task.id && sub.subtaskstatus == "completed").length }}/{{ task.subtasks.filter(sub => sub.task_id == task.id).length}}
+                                        </div>
+                                    </div>
+
+                                </div>
+
+                                <div class="menu-tasks">
+                                    <button @click="selectedTask = task, showModalUpdateTask = true" class="button-icon-date"><img src="/lapis.svg" alt="lapis"></button>
+                                    <button @click="selectedTask = task, showModalUpdateDate = true" class="button-icon-date-margin"><img src="/calendario.svg" alt="calendario"></button>
+                                    <button @click="deleteTask(task.id)" class="trash-button"><img src="/lixeiracinza.svg" alt="excluir"></button>
+                                </div>
+
+                            </div>
+
+                            <!-- SUBTASK -->
+
+                            <div class="main-subtask-content">
+
+                                <div v-for="subtask in task.subtasks" :key="task.subtasks.id">
+
+                                    <div class="sub-task-content">
+
+                                        <div class="sub-task">
+
+                                            <div>
+                                                <button class="checkbutton" @click="checkSubtask(subtask.id)">
+
+                                                    <div v-if="subtask.subtaskstatus == 'pending'">
+                                                        <img src="/checkvazio.svg" alt="check">
+                                                    </div>
+
+                                                    <div v-else>
+                                                        <img src="/checkcheio.svg" alt="check">
+                                                    </div>
+
+                                                </button>
+                                            </div>
+
+                                            <!-- COLLAPSE SUBTASK -->
+
+                                            <div class="subtask-text">
+                                                <button @click="showCollapse(subtask.id)" class="title-subtask">{{subtask.subtasktitle }}</button>
+                                                <div class="description-subtask" v-if="collapsesubtask == true && subtask.id == newId">{{subtask.subtaskdescription }}</div>
+                                            </div>
+
+                                        </div>
+
+                                        <div class="menu-subtasks">
+                                            <button @click="subtaskId = subtask.id, showModalUpdateSubtask = true" class="button-icon-date-margin-subtask"><img src="/lapis.svg" alt="lapis"></button>
+                                            <button class="trash-button"> <img src="/lixeiracinza.svg" alt="excluir" @click="deleteSubTask(subtask.id)"></button>
+                                        </div>
+
+                                    </div>
+
+                                </div>
+
+                            </div>
+
+                        </div>
+
+                        <div class="add-task">
+                            <button @click="selectedTask = task, showModalNewSubtask = true" class="button-icon-date subtask-text"><img src="/adicionarcinza.svg" alt="adicionar">Criar subtarefa</button>
+                        </div>
 
                     </div>
 
@@ -165,17 +156,14 @@
 
         </div>
 
+
         <footer class="footer-items">
             <h6>Fernando Códolo Pagani &copy 2024 </h6>
             <div class="icons-footer">
-                <a href="https://www.linkedin.com/in/fernandocpagani/" target="_blank"><img src="/linkedin.svg"
-                        alt="icone linkedin"></a>
-                <a href="https://www.instagram.com/fernandocpagani/" target="_blank"><img src="/instagram.svg"
-                        alt="icone instagram"></a>
-                <a href="https://www.facebook.com/fernando.codolopagani/" target="_blank"><img src="/facebook.svg"
-                        alt="icone facebook"></a>
-                <a href="https://github.com/fernandocpagani" target="_blank"><img src="/github.svg"
-                        alt="icone gihub"></a>
+                <a href="https://www.linkedin.com/in/fernandocpagani/" target="_blank"><img src="/linkedin.svg" alt="icone linkedin"></a>
+                <a href="https://www.instagram.com/fernandocpagani/" target="_blank"><img src="/instagram.svg"  alt="icone instagram"></a>
+                <a href="https://www.facebook.com/fernando.codolopagani/" target="_blank"><img src="/facebook.svg" alt="icone facebook"></a>
+                <a href="https://github.com/fernandocpagani" target="_blank"><img src="/github.svg" alt="icone gihub"></a>
             </div>
         </footer>
 
@@ -208,7 +196,7 @@ export default {
         return {
             selectedTask: {},
             selectedSubtask: {},
-            subtaskId:{},
+            subtaskId: {},
             tasks: [],
             subtask: {},
             subtasks: [],
@@ -229,19 +217,18 @@ export default {
             showModalNewSubtask: false,
             showModalUpdateSubtask: false,
             collapsesubtask: false,
-            newId: '',           
+            newId: '',
         }
     },
 
     methods: {
-
         async showCollapse(id) {
             const newId = id
-            if (this.collapsesubtask == true ) {
-                this.collapsesubtask = false                
+            if (this.collapsesubtask == true) {
+                this.collapsesubtask = false
                 this.newId = newId;
             } else {
-                this.collapsesubtask = true                           
+                this.collapsesubtask = true
                 this.newId = newId;
             }
         },
@@ -307,27 +294,111 @@ export default {
         },
 
         getTasks() {
-            console.log('task');
             axios
-                .get('http://127.0.0.1:8000/api/task')
+                .get(`http://127.0.0.1:8000/api/task`)
                 .then((response) => {
                     this.tasks = response.data
                     this.moment = moment;
                 })
-        }
+        },
+
+        getTasksToday() {
+            axios
+                .get(`http://127.0.0.1:8000/api/tasktoday`)
+                .then((response) => {
+                    this.tasks = response.data
+                    this.moment = moment;
+                })
+        },
+
+        getTasksLate() {
+            axios
+                .get(`http://127.0.0.1:8000/api/tasklate`)
+                .then((response) => {
+                    this.tasks = response.data
+                    this.moment = moment;
+                })
+        },
+
     },
 
     async mounted() {
-
         this.getTasks();
-
     },
+
 }
 
 </script>
 
 <style scoped>
-.main-content {
+.full-content {
+    display: flex;
+    flex-direction: column;
+}
+
+a {
+    background-color: transparent;
+}
+
+.main-content-left {
+    width: 293px;
+    height: 100%;
+    position: fixed;
+    margin-top: 70px;
+    background-color: #fafafa;
+}
+
+.menu-left {
+    width: 293px;
+    padding: 0;
+}
+
+.first-menu-button {
+    background-color: #fafafa;
+    border: none;
+    font-size: 15px;
+    font-weight: 600px;
+    line-height: 18.29px;
+    margin-left: 46px;
+    margin-top: 63px;
+    cursor: pointer;
+}
+
+.first-menu-button img {
+    margin-right: 20px;
+}
+
+.menu-button {
+    background-color: #fafafa;
+    border: none;
+    font-size: 15px;
+    font-weight: 600px;
+    line-height: 18.29px;
+    margin-left: 46px;
+    margin-top: 45px;
+    cursor: pointer;
+}
+
+.menu-button img {
+    margin-right: 20px;
+}
+
+.footer-item {
+    left: 82px;
+    bottom: 80px;
+    position: absolute;
+    text-align: center;
+    margin: auto 0;
+}
+
+.icons img {
+    margin-left: 10px;
+    margin-bottom: 8px;
+    cursor: pointer;
+}
+
+
+.main-content-right {
     box-sizing: border-box;
     padding: 50px 144px 50px 165px;
     background-color: #ffffff;
@@ -533,7 +604,6 @@ export default {
     padding-right: 25px;
     display: flex;
     flex-direction: row;
-
 }
 
 .sub-task {
@@ -664,7 +734,45 @@ export default {
         margin-bottom: 50px;
     }
 
-    /* MODAL VIEW TASK */
 
+    .footer-item {
+        display: none;
+    }
+
+    .main-content {
+        height: 50px;
+        width: 489px;
+        position: fixed;
+        top: 70px;
+        background-color: #fafafa;
+    }
+
+    .menu {
+        display: flex;
+        flex-direction: row;
+        width: 100%;
+        padding: 0;
+        margin: 0;
+        justify-content: space-between;
+        padding: 10px 15px;
+    }
+
+    .first-menu-button {
+        margin: 0;
+    }
+
+    .first-menu-button img {
+        margin: 0;
+        padding-right: 10px;
+    }
+
+    .menu-button {
+        margin: 0;
+    }
+
+    .menu-button img {
+        margin: 0;
+        padding-right: 10px;
+    }
 }
 </style>

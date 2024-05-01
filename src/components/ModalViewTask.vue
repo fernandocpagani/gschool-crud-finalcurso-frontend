@@ -2,12 +2,9 @@
 
   <div class="backdrop-modal" v-if="showModalViewTask">
 
-    
-    <ModalUpdateSubtask @getTasksEmit="getTasks" v-model:showModalUpdateSubtask="showModalUpdateSubtask"
-    :subtask="subtaskId"></ModalUpdateSubtask>
-    
-    <div id="main-container" v-if="showMaincontainer">
+    <ModalUpdateSubtask @getTasksEmit="getTasks" v-model:showModalUpdateSubtask="showModalUpdateSubtask" :subtask="subtaskId"></ModalUpdateSubtask>
 
+    <div id="main-container" v-if="showMaincontainer">
 
       <nav class="view-task-nav">
 
@@ -25,20 +22,17 @@
         </div>
 
         <div class="buttons-nav-right">
+
           <form>
 
             <div>
               <ul class="main-dropdown">
                 <li class="dropdown-hover">
                   <ul class="dropdown">
-                    <li class="black-li" @click="copyTask(task.id)"><img src="/copiarlink.svg" alt="copiar link"> Copiar
-                      link da tarefa </li>
-                    <li class="black-li" @click="duplicateTask(task.id)"><img src="/duplicar.svg" alt="duplicar tarefa">
-                      Duplicar tarefa </li>
-                    <li class="black-li" @click="printTask(task.id)"> <img src="/imprimir.svg" alt="imprimir"> Imprimir
-                      tarefa </li>
-                    <li class="red-li" @click="deleteTask(task.id)"><img src="/lixeiravermelha.svg" alt="excluir">
-                      Excluir tarefa </li>
+                    <li class="black-li" @click="copyTask(task.id)"><img src="/copiarlink.svg" alt="copiar link"> Copiar link da tarefa </li>
+                    <li class="black-li" @click="duplicateTask(task.id)"><img src="/duplicar.svg" alt="duplicar tarefa"> Duplicar tarefa </li>
+                    <li class="black-li" @click="printTask(task.id)"> <img src="/imprimir.svg" alt="imprimir"> Imprimir tarefa </li>
+                    <li class="red-li" @click="deleteTask(task.id)"><img src="/lixeiravermelha.svg" alt="excluir"> Excluir tarefa </li>
                   </ul>
                 </li>
               </ul>
@@ -77,9 +71,7 @@
 
           <h3 class="h3-sub-task">Subtarefas</h3>
 
-
           <div v-for="(subtask, key) in task.subtasks" :key="key">
-
 
             <div class="sub-task" v-if="subtask.task_id == task.id">
 
@@ -102,12 +94,8 @@
                 </div>
 
                 <div class="menu-tasks">
-
-                  <button  @click="subtaskId = subtask.id, closeAndOpenModal()  " class="button-icon-date"><img
-                      src="/lapis.svg" alt="lapis"></button>
-
-                  <button @click="deleteSubTask(subtask.id)"><img class="item-menu-task2" src="/lixeiracinza.svg"
-                      alt="excluir"></button>
+                  <button @click="subtaskId = subtask.id, closeAndOpenModal()" class="button-icon-date"><img src="/lapis.svg" alt="lapis"></button>
+                  <button @click="deleteSubTask(subtask.id)"><img class="item-menu-task2" src="/lixeiracinza.svg" alt="excluir"></button>
                 </div>
 
               </div>
@@ -121,23 +109,19 @@
         <div class="right-content">
 
           <h4 class="title-right">Criado em</h4>
-          <h5 class="info-black"><img src="/datapreto.svg" alt="calendario-preto">{{
-            moment(task.created_at).format('DD/MM/YYYY') }} às {{ moment(created_at).format('HH:mm') }} </h5>
+          <h5 class="info-black"><img src="/datapreto.svg" alt="calendario-preto">{{moment(task.created_at).format('DD/MM/YYYY') }} às {{ moment(created_at).format('HH:mm') }} </h5>
 
           <h4 class="title-right">Data de vencimento</h4>
           <div v-if="task.taskfinishdate >= moment().format('YYYY-MM-DD')">
-            <h5 class="info-green"><img src="/dataverde.svg" alt="calendario-verde">{{
-              moment(task.taskfinishdate).format('DD/MM/YYYY') }} </h5>
+            <h5 class="info-green"><img src="/dataverde.svg" alt="calendario-verde">{{moment(task.taskfinishdate).format('DD/MM/YYYY') }} </h5>
           </div>
 
           <div v-else>
-            <h5 class="info-red"><img src="/datavermelho.svg" alt="calendario-vermelho">{{
-              moment(task.taskfinishdate).format('DD/MM/YYYY') }} </h5>
+            <h5 class="info-red"><img src="/datavermelho.svg" alt="calendario-vermelho">{{moment(task.taskfinishdate).format('DD/MM/YYYY') }} </h5>
           </div>
 
           <h4 class="title-right">Modificado em</h4>
-          <h5 class="info-black"><img src="/datapreto.svg" alt="calendario-preto">{{
-            moment(task.updated_at).format('DD/MM/YYYY') }} às {{ moment(task.updated_at).format('HH:mm') }} </h5>
+          <h5 class="info-black"><img src="/datapreto.svg" alt="calendario-preto">{{moment(task.updated_at).format('DD/MM/YYYY') }} às {{ moment(task.updated_at).format('HH:mm') }} </h5>
 
           <h4 class="title-right">ID da tarefa</h4>
           <h5 class="info-black">{{ task.id }}</h5>
@@ -149,6 +133,7 @@
     </div>
 
   </div>
+
 </template>
 
 <script>
@@ -195,41 +180,36 @@ export default {
     this.moment = moment;
   },
 
-
-
-
-
   methods: {
 
     close() {
       this.$emit('update:showModalViewTask', false)
-      this.$emit('getTasksEmit')  
+      this.$emit('getTasksEmit')
     },
 
-    closeAndOpenModal(){
+    closeAndOpenModal() {
       this.showModalUpdateSubtask = true
-      this.showMaincontainer= false      
-    },   
-     
-    async duplicateTask(id){
+      this.showMaincontainer = false
+    },
+
+    async duplicateTask(id) {
       const user = JSON.parse(localStorage.getItem("user-info"))
-       const data = {
+      const data = {
         tasktitle: this.task.tasktitle,
         taskdescription: this.task.taskdescription,
-        taskfinishdate: this.task.taskfinishdate,    
+        taskfinishdate: this.task.taskfinishdate,
         users_id: user.user.id,
       }
 
       axios.post(`http://127.0.0.1:8000/api/task/${id}/copytask`, data)
-      .catch(function (error) {
-                    console.error(error);
-                    
-                })
-                .then((resp) => {
-                  this.close()
-      })
-    },
+        .catch(function (error) {
+          console.error(error);
 
+        })
+        .then((resp) => {
+          this.close()
+        })
+    },
 
     async checkTask(id) {
       const result = await axios.get(`http://localhost:8000/api/task/${id}`)
@@ -238,19 +218,18 @@ export default {
           {
             taskstatus: "completed"
           }).then((resp) => {
-          this.$emit('getTasksEmit')
-          this.close()
-      })
+            this.$emit('getTasksEmit')
+            this.close()
+          })
       } else {
         result = await axios.put(`http://localhost:8000/api/task/${id}/updatetaskstatus`,
           {
             taskstatus: "pending"
           }).then((resp) => {
-          this.$emit('getTasksEmit')
-          this.close()
-      })
+            this.$emit('getTasksEmit')
+            this.close()
+          })
       }
-      
     },
 
     async checkSubtask(id) {
@@ -261,21 +240,20 @@ export default {
           {
             subtaskstatus: "completed"
 
-          })    .then((resp) => {
-          this.$emit('getTasksEmit')
-          this.close()
-      })
+          }).then((resp) => {
+            this.$emit('getTasksEmit')
+            this.close()
+          })
       } else {
         result = await axios.put(`http://localhost:8000/api/subtask/${id}/updatesubtaskstatus`,
           {
             subtaskstatus: "pending"
           })
           .then((resp) => {
-          this.$emit('getTasksEmit')
-          this.close()
-      })
+            this.$emit('getTasksEmit')
+            this.close()
+          })
       }
-
     },
 
     async printTask(id) {
@@ -536,7 +514,7 @@ form:hover .dropdown-hover {
   justify-content: space-between;
 }
 
-.subtask-text{
+.subtask-text {
   width: 370px;
 }
 
@@ -657,6 +635,5 @@ form:hover .dropdown-hover {
   .sub-container {
     flex-direction: column;
   }
-
 }
 </style>

@@ -1,32 +1,27 @@
 <template>
   <div>
 
-
- 
     <div class="backdrop-modal" v-if="showModalUpdateSubtask">
 
       <form id="form">
 
         <div>
-          <input type="name" id="task-name" name="task-name" placeholder="Nome da tarefa" maxlength="35"
-          v-model="subtasktitle" >
+          <input type="name" id="task-name" name="task-name" placeholder="Nome da tarefa" maxlength="35" v-model="subtasktitle">
         </div>
 
         <div>
-          <input type="name" id="task-description" name="task-description" maxlength="50" placeholder="Descrição" v-model="subtaskdescription"
-          >
+          <input type="name" id="task-description" name="task-description" maxlength="50" placeholder="Descrição" v-model="subtaskdescription">
         </div>
-   
+
         <div class="buttons">
           <button class="white-button" @click="close()">Cancelar</button>
-          <div class="button" @click="updateSubTask(subtask)"> <input type="button" class="black-button-new-subtask"
-              value="Atualizar subtarefa"> </div>
+          <div class="button" @click="updateSubTask(subtask)"> <input type="button" class="black-button-new-subtask" value="Atualizar subtarefa"> </div>
         </div>
+
       </form>
 
-   
-  </div>
-   
+    </div>
+
   </div>
 </template>
 
@@ -34,13 +29,11 @@
 
 import axios from 'axios'
 
-
 export default {
 
-
   data() {
-    return {       
-      modalShowUpdateSubtask: false,     
+    return {
+      modalShowUpdateSubtask: false,
       subtasktitle: '',
       subtaskdescription: '',
       taskid: '',
@@ -49,20 +42,20 @@ export default {
 
   props: {
     subtask: Number,
-    showModalUpdateSubtask:{
-            type: Boolean,
-            required:true,
-        }
+    showModalUpdateSubtask: {
+      type: Boolean,
+      required: true,
+    }
   },
 
   methods: {
-        
-    close(){      
-      this.$emit('update:showModalUpdateSubtask', false)               
-      this.$emit('update:showModalViewTask', false)       
-        },
 
-    async updateSubTask(id) {     
+    close() {
+      this.$emit('update:showModalUpdateSubtask', false)
+      this.$emit('update:showModalViewTask', false)
+    },
+
+    async updateSubTask(id) {
       const result = await axios.put(`http://localhost:8000/api/subtask/${id}/update`,
         {
           subtasktitle: this.subtasktitle,
@@ -70,9 +63,8 @@ export default {
         })
         .then((resp) => {
           window.location.reload();
-      })
+        })
     },
-
   },
 
 }
@@ -91,16 +83,16 @@ a {
 }
 
 .backdrop-modal {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100vw;
-    height: 100vh;
-    overflow: hidden;
-    background-color: #0002;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  overflow: hidden;
+  background-color: #0002;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .btn {
@@ -111,7 +103,7 @@ a {
   padding-right: 30px;
 }
 
-.btn:hover{
+.btn:hover {
   background-color: transparent;
 }
 
@@ -168,16 +160,16 @@ a {
 }
 
 .black-button-new-subtask {
-    width: 150px;
-    height: 40px;
-    background-color: #000;
-    color: #fff;
-    font-size: 14px;
-    font-style: normal;
-    font-weight: 600;
-    line-height: 17.07px;
-    cursor: pointer;
-    margin-left: 15px;
+  width: 150px;
+  height: 40px;
+  background-color: #000;
+  color: #fff;
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 600;
+  line-height: 17.07px;
+  cursor: pointer;
+  margin-left: 15px;
 }
 
 

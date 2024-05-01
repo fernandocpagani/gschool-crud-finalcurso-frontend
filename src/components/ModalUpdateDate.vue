@@ -7,8 +7,7 @@
 
         <div class="button-date">
           <img src="../../public/calendario.svg" alt="">
-          <input placeholder="Data de vencimento" class="date" type="text" onfocus="(this.type='date')"
-            onblur="(this.type='text')" id="date" v-model="date">
+          <input placeholder="Data de vencimento" class="date" type="text" onfocus="(this.type='date')" onblur="(this.type='text')" id="date" v-model="date">
         </div>
 
         <div class="buttons-date">
@@ -57,17 +56,17 @@ export default {
       axios.put(`http://localhost:8000/api/task/${id}/updatedate`, {
         taskfinishdate: this.date,
       })
-      .then((resp) => {
+        .then((resp) => {
           this.$emit('getTasksEmit')
           this.close()
-      })
+        })
     },
 
   },
 
   watch: {
     showModalUpdateDate(newValue, oldValue) {
-      if(newValue){
+      if (newValue) {
         this.date = this.task.taskfinishdate;
       }
     }
@@ -78,6 +77,7 @@ export default {
 </script>
 
 <style scoped>
+
 body {
   min-height: 100vh;
   display: grid;
@@ -114,16 +114,15 @@ a {
 
 .button-date {
   display: flex;
-  flex-direction: row; 
+  flex-direction: row;
   margin-left: 25px;
   width: 180px;
-  height: 40px;  
+  height: 40px;
   border: solid 1px #e5e5e5;
   background-color: #fff;
   margin-bottom: 15px;
   font-size: 14px;
 }
-
 
 .button-date img {
   height: 14px;

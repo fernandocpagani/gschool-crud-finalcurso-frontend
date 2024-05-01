@@ -1,30 +1,29 @@
 <template>
-  <div>  
+  <div>
 
     <div class="backdrop-modal" v-if="showModalNewSubtask">
-    
+
       <form id="form">
+        
         <div>
-          <input type="name" id="task-name" name="task-name" placeholder="Nome da subtarefa"
-          maxlength="30" v-model="subtasktitle">
+          <input type="name" id="task-name" name="task-name" placeholder="Nome da subtarefa" maxlength="30" v-model="subtasktitle">
         </div>
-                                                   
-<div>
-    <input type="name" id="task-description" name="task-description" maxlength="50"
-        placeholder="Descrição" v-model="subtaskdescription">
-</div>
 
-<div class="buttons">
-    <button class="white-button" @click="close()">Cancelar</button>
-    <div class="button" @click="createNewSubTask(task.id)">
-        <input type="button" class="black-button" value="Criar subtarefa">
+        <div>
+          <input type="name" id="task-description" name="task-description" maxlength="50" placeholder="Descrição" v-model="subtaskdescription">
+        </div>
+
+        <div class="buttons">
+          <button class="white-button" @click="close()">Cancelar</button>
+          <div class="button" @click="createNewSubTask(task.id)">
+            <input type="button" class="black-button" value="Criar subtarefa">
+          </div>
+        </div>
+
+      </form>
+
     </div>
-</div>
 
-</form>
-   
-  </div>
-   
   </div>
 </template>
 
@@ -36,50 +35,50 @@ export default {
 
   data() {
     return {
-      modalShowNewSubtask: false,    
+      modalShowNewSubtask: false,
       subtasktitle: '',
-      subtaskdescription: '',    
+      subtaskdescription: '',
       taskid: '',
     }
   },
 
   props: {
     task: Object,
-    showModalNewSubtask:{
-            type: Boolean,
-            required:true,
-        }
+    showModalNewSubtask: {
+      type: Boolean,
+      required: true,
+    }
   },
 
   methods: {
 
-    close(){           
-            this.$emit('update:showModalNewSubtask', false)            
-        },
+    close() {
+      this.$emit('update:showModalNewSubtask', false)
+    },
 
     async createNewSubTask(id) {
-            const data = {
-              subtasktitle: this.subtasktitle,
-              subtaskdescription: this.subtaskdescription,
-                task_id: id,
-            }
+      const data = {
+        subtasktitle: this.subtasktitle,
+        subtaskdescription: this.subtaskdescription,
+        task_id: id,
+      }
 
-            axios.post('http://localhost:8000/api/subtask/register', data)               
-                .catch(function (error) {
-                    console.error(error);
-                })
-                .then((resp) => {
-                  this.subtasktitle = "";
-                  this.subtaskdescription = "";
+      axios.post('http://localhost:8000/api/subtask/register', data)
+        .catch(function (error) {
+          console.error(error);
+        })
+        .then((resp) => {
+          this.subtasktitle = "";
+          this.subtaskdescription = "";
           this.$emit('getTasksEmit')
           this.close()
-      })
-        },
+        })
+    },
   },
 
   watch: {
     showModalUpdateDate(newValue, oldValue) {
-      if(newValue){
+      if (newValue) {
         this.subtasktitle = this.task.subtask.subtasktitle;
         this.subtaskdescription = this.task.subtask.subtaskdescription;
       }
@@ -101,16 +100,16 @@ a {
 }
 
 .backdrop-modal {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100vw;
-    height: 100vh;
-    overflow: hidden;
-    background-color: #0002;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  overflow: hidden;
+  background-color: #0002;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 #form {
@@ -143,18 +142,18 @@ a {
 }
 
 .subtask-text {
-    font-size: 15px;
-    font-weight: 400;
-    line-height: 18px;
-    letter-spacing: 0em;
-    text-align: left;
-    text-decoration: none;
-    color: red;
-    width: 450px;
-    margin-left: 20px;
-    padding: 0;
-    height: 18px;
-    width: 450px;
+  font-size: 15px;
+  font-weight: 400;
+  line-height: 18px;
+  letter-spacing: 0em;
+  text-align: left;
+  text-decoration: none;
+  color: red;
+  width: 450px;
+  margin-left: 20px;
+  padding: 0;
+  height: 18px;
+  width: 450px;
 }
 
 .buttons {
@@ -206,7 +205,7 @@ a {
   font-size: 15px;
 }
 
-.btn  img{
+.btn img {
   margin-right: 10px;
 }
 

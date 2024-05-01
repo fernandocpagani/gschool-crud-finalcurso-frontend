@@ -40,8 +40,7 @@
                         </div>
 
                         <Message :msg="msg" v-show="msg" />
-                        <Messagered :msg="msgred" v-show="msgred" />
-                        
+                        <Messagered :msg="msgred" v-show="msgred" />                        
 
                     </form>
 
@@ -364,7 +363,6 @@ footer img {
     .left-content {
         max-width: 489px;
     }
-
 }
 
 </style>

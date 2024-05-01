@@ -2,42 +2,42 @@
   <div>
     <div class="backdrop-modal" v-if="showModalInfo">
 
-<div class="modal">
+      <div class="modal">
 
-      <div id="main-content">
+        <div id="main-content">
 
-        <div class="user-info">
+          <div class="user-info">
 
-          <h5 class="title">Projeto - Crud de Tarefas</h5> 
+            <h5 class="title">Projeto - Crud de Tarefas</h5>
 
-          <h4 class="title-info">Protótipo criado por</h4>
-          <h5 class="info-black">Green</h5>
+            <h4 class="title-info">Protótipo criado por</h4>
+            <h5 class="info-black">Green</h5>
 
-          <h4 class="title-info">Desenvolvido por</h4>
-          <h5 class="info-black">Fernando Códolo Pagani</h5>
+            <h4 class="title-info">Desenvolvido por</h4>
+            <h5 class="info-black">Fernando Códolo Pagani</h5>
 
-          <h4 class="title-info">Linguagens utilizadas</h4>
-          <h5 class="info-black2">Frontend: Vue JS</h5>
-          <h5 class="info-black">Backend: Laravel PHP</h5>
+            <h4 class="title-info">Linguagens utilizadas</h4>
+            <h5 class="info-black2">Frontend: Vue JS</h5>
+            <h5 class="info-black">Backend: Laravel PHP</h5>
 
-         <div class="social">
-          <a href="https://www.linkedin.com/in/fernandocpagani/" target="_blank"><img src="/linkedin.svg" alt="icone linkedin"></a>
-          <a href="https://www.instagram.com/fernandocpagani/" target="_blank"><img  src="/instagram.svg" alt="icone instagram"></a>
-          <a href="https://www.facebook.com/fernando.codolopagani/" target="_blank"><img src="/facebook.svg" alt="icone facebook"></a>
-          <a href="https://github.com/fernandocpagani" target="_blank"><img src="/github.svg" alt="icone gihub"></a>
-         </div>
+            <div class="social">
+              <a href="https://www.linkedin.com/in/fernandocpagani/" target="_blank"><img src="/linkedin.svg" alt="icone linkedin"></a>
+              <a href="https://www.instagram.com/fernandocpagani/" target="_blank"><img src="/instagram.svg" alt="icone instagram"></a>
+              <a href="https://www.facebook.com/fernando.codolopagani/" target="_blank"><img src="/facebook.svg" alt="icone facebook"></a>
+              <a href="https://github.com/fernandocpagani" target="_blank"><img src="/github.svg" alt="icone gihub"></a>
+            </div>
 
-        </div>
+          </div>
 
-        <div class="buttons">
-          <button class="black-button" @click="close()">OK</button>
+          <div class="buttons">
+            <button class="black-button" @click="close()">OK</button>
+          </div>
+
         </div>
 
       </div>
 
     </div>
-
-  </div>
 
   </div>
 </template>
@@ -47,49 +47,47 @@
 export default {
 
   data() {
-    return {      
+    return {
       modalShowInfo: false,
-     
+
     }
   },
 
-  props: {      
-        showModalInfo:{
-            type: Boolean,
-            required:true,
-        }
-    },
+  props: {
+    showModalInfo: {
+      type: Boolean,
+      required: true,
+    }
+  },
 
 
   methods: {
 
-close(){
-        this.$emit('closeModal')
-        this.$emit('update:showModalInfo', false)            
+    close() {
+      this.$emit('closeModal')
+      this.$emit('update:showModalInfo', false)
     },
   }
-
 }
 
 </script>
 
 <style scoped>
-
 .backdrop-modal {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100vw;
-    height: 100vh;
-    overflow: hidden;
-    background-color: #0002;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  overflow: hidden;
+  background-color: #0002;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .nav-button2 {
-    padding: 0 22.5px 0 35px;
+  padding: 0 22.5px 0 35px;
 }
 
 #main-content {
@@ -142,14 +140,14 @@ img {
   padding-right: 10px;
 }
 
-.social{
+.social {
   justify-content: space-between;
   display: flex;
   flex-direction: row;
   padding: 0 20px;
 }
 
-.social img{
+.social img {
   width: 40px;
   height: 40px;
 }
@@ -175,8 +173,7 @@ img {
   margin: 30px;
 }
 
-a{
+a {
   background-color: transparent;
 }
-
 </style>

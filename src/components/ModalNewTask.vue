@@ -7,23 +7,20 @@
       <form id="form">
 
         <div>
-          <input type="name" id="task-name" name="task-name" placeholder="Nome da tarefa" maxlength="30"
-            v-model="tasktitle">
+          <input type="name" id="task-name" name="task-name" placeholder="Nome da tarefa" maxlength="30" v-model="tasktitle">
         </div>
 
         <div>
-          <input type="name" id="task-description" name="task-description" maxlength="50" placeholder="Descrição"
-            v-model="taskdescription">
+          <input type="name" id="task-description" name="task-description" maxlength="50" placeholder="Descrição" v-model="taskdescription">
         </div>
 
         <div class="button-date">
           <img src="../../public/calendario.svg" alt="">
-          <input placeholder="Data de vencimento" class="date" type="text" onfocus="(this.type='date')"
-            onblur="(this.type='text')" id="date" v-model="taskdate">
+          <input placeholder="Data de vencimento" class="date" type="text" onfocus="(this.type='date')" onblur="(this.type='text')" id="date" v-model="taskdate">
         </div>
 
         <div class="buttons">
-          <button class="white-button" @click="close()">Cancelar</button>         
+          <button class="white-button" @click="close()">Cancelar</button>
           <div class="button" @click="createTask()">
             <input type="button" class="black-button" value="Criar tarefa">
           </div>
@@ -41,7 +38,6 @@ import axios from 'axios'
 
 export default {
 
-
   data() {
     return {
       modalShowNewTask: false,
@@ -52,7 +48,7 @@ export default {
     }
   },
 
-  props: {    
+  props: {
     showModalNewTask: {
       type: Boolean,
       required: true,
@@ -64,8 +60,8 @@ export default {
     close() {
       this.$emit('update:showModalNewTask', false)
     },
-   
-    async  createTask() {
+
+    async createTask() {
 
       const user = JSON.parse(localStorage.getItem("user-info"))
       const data = {
@@ -76,13 +72,13 @@ export default {
       }
 
       axios.post('http://localhost:8000/api/task/register', data)
-      .catch(function (error) {
-                    console.error(error);
-                    
-                })
-                .then((resp) => {
-                  window.location.reload();
-      })
+        .catch(function (error) {
+          console.error(error);
+
+        })
+        .then((resp) => {
+          window.location.reload();
+        })
     },
   },
 }
@@ -229,8 +225,6 @@ a {
   position: relative;
   color: black;
 }
-
-
 
 @media(max-width: 490px) {
 

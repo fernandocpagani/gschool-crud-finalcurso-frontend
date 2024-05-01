@@ -7,15 +7,14 @@
 
             <div class="menu">
                 <img class="nav-add" src="/adicionar.svg" alt="adicionar">
-                <ModalNewTask  v-model:showModalNewTask="showModalNewTask"></ModalNewTask>
+                <ModalNewTask v-model:showModalNewTask="showModalNewTask"></ModalNewTask>
                 <button @click="showModalNewTask = true" class="hidden">Criar tarefa</button>
 
                 <ModalUser v-model:showModalUser="showModalUser"></ModalUser>
                 <button @click="showModalUser = true" class="button-modal-user first-letter"> {{ name }} </button>
 
                 <ModalInfo v-model:showModalInfo="showModalInfo"></ModalInfo>
-                <button @click="showModalInfo = true" class="button-modal-user"> <img class="nav-add"
-                        src="/interrogacao.svg" alt="adicionar"></button>
+                <button @click="showModalInfo = true" class="button-modal-user"> <img class="nav-add" src="/interrogacao.svg" alt="adicionar"></button>
 
                 <img class="nav-button" src="/sino.svg" alt="sino">
                 <a v-on:click="logout" href="/" class="out-button">Sair</a>
@@ -53,7 +52,6 @@ export default {
         this.name = JSON.parse(user).user.name[0].toUpperCase();
     },
 
-
     methods: {
         logout() {
             localStorage.clear();
@@ -64,13 +62,12 @@ export default {
             console.log('O modal está fechado!');
         }
     },
-
-
 }
 
 </script>
 
 <style scoped>
+
 nav {
     background-color: #000;
     width: 100%;
@@ -137,7 +134,7 @@ nav {
 .button-modal-user {
     border: none;
     background-color: #000;
-    cursor:pointer;
+    cursor: pointer;
 }
 
 .first-letter {

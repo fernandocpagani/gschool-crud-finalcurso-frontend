@@ -1,17 +1,16 @@
 <template>
-    <div class="backdrop-modal" v-if="showModalUpdateTask">
+  <div class="backdrop-modal" v-if="showModalUpdateTask">
 
-      
-      <div id="main-content">
-   
-    <form>
+    <div id="main-content">
+
+      <form>
+
         <div>
           <input type="name" id="task-name" name="task-name" placeholder="Nome da tarefa" maxlength="35" v-model="title">
         </div>
 
         <div>
-          <input type="name" id="task-description" name="task-description" maxlength="50" placeholder="Descrição"
-          v-model="description">
+          <input type="name" id="task-description" name="task-description" maxlength="50" placeholder="Descrição" v-model="description">
         </div>
 
         <div class="buttons">
@@ -20,8 +19,9 @@
             <input type="button" class="black-button" value="Atualizar tarefa">
           </div>
         </div>
+
       </form>
-        
+
     </div>
 
   </div>
@@ -34,47 +34,47 @@ import axios from 'axios'
 export default {
 
   data() {
-    return {    
+    return {
       modalShowUpdateTask: false,
       title: '',
       description: '',
-      taskid: '',   
+      taskid: '',
     }
   },
 
   props: {
     task: Object,
-    showModalUpdateTask:{
-            type: Boolean,
-            required:true,
-        },
+    showModalUpdateTask: {
+      type: Boolean,
+      required: true,
+    },
   },
 
   methods: {
-    
-    close(){       
-        this.$emit('update:showModalUpdateTask', false)            
+
+    close() {
+      this.$emit('update:showModalUpdateTask', false)
     },
 
     async updateTask(id) {
-            const result = await axios.put(`http://localhost:8000/api/task/${id}/update`,
-                {
-                    tasktitle: this.title,
-                    taskdescription: this.description,
-                })
-                .then((resp) => {
-                  this.subtasktitle = "";
-                  this.subtaskdescription = "";
+      const result = await axios.put(`http://localhost:8000/api/task/${id}/update`,
+        {
+          tasktitle: this.title,
+          taskdescription: this.description,
+        })
+        .then((resp) => {
+          this.subtasktitle = "";
+          this.subtaskdescription = "";
           this.$emit('getTasksEmit')
           this.close()
-      })
-        },
+        })
+    },
 
   },
 
   watch: {
     showModalUpdateDate(newValue, oldValue) {
-      if(newValue){
+      if (newValue) {
         this.taskdescription = this.task.taskdescription;
         this.taskdescription = this.task.taskdescription;
       }
@@ -86,6 +86,7 @@ export default {
 </script>
 
 <style scoped>
+
 body {
   min-height: 100vh;
   display: grid;
@@ -97,16 +98,16 @@ a {
 }
 
 .backdrop-modal {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100vw;
-    height: 100vh;
-    overflow: hidden;
-    background-color: #0002;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  overflow: hidden;
+  background-color: #0002;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 #main-content {
