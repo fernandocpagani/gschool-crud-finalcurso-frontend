@@ -2,9 +2,8 @@
 
   <div class="backdrop-modal" v-if="showModalViewTask">
 
-    <ModalUpdateSubtask @getTasksEmit="getTasks" v-model:showModalUpdateSubtask="showModalUpdateSubtask" :subtask="subtaskId"></ModalUpdateSubtask>
-
     <div id="main-container" v-if="showMaincontainer">
+    <ModalUpdateSubtask @getTasksEmit="getTasks" v-model:showModalUpdateSubtask="showModalUpdateSubtask" :subtask="subtaskId" ></ModalUpdateSubtask>
 
       <nav class="view-task-nav">
 
@@ -31,7 +30,7 @@
                   <ul class="dropdown">
                     <li class="black-li" @click="copyTask(task.id)"><img src="/copiarlink.svg" alt="copiar link"> Copiar link da tarefa </li>
                     <li class="black-li" @click="duplicateTask(task.id)"><img src="/duplicar.svg" alt="duplicar tarefa"> Duplicar tarefa </li>
-                    <li class="black-li" @click="printTask(task.id)"> <img src="/imprimir.svg" alt="imprimir"> Imprimir tarefa </li>
+                    <li class="black-li"><router-link :to="'/viewtask/' + task.id" class="router"> <img src="/imprimir.svg" alt="imprimir"> Imprimir tarefa </router-link></li>
                     <li class="red-li" @click="deleteTask(task.id)"><img src="/lixeiravermelha.svg" alt="excluir"> Excluir tarefa </li>
                   </ul>
                 </li>
@@ -109,7 +108,7 @@
         <div class="right-content">
 
           <h4 class="title-right">Criado em</h4>
-          <h5 class="info-black"><img src="/datapreto.svg" alt="calendario-preto">{{moment(task.created_at).format('DD/MM/YYYY') }} às {{ moment(created_at).format('HH:mm') }} </h5>
+          <h5 class="info-black"><img src="/datapreto.svg" alt="calendario-preto">{{moment(task.created_at).format('DD/MM/YYYY') }} às {{ moment(task.created_at).format('HH:mm') }} </h5>
 
           <h4 class="title-right">Data de vencimento</h4>
           <div v-if="task.taskfinishdate >= moment().format('YYYY-MM-DD')">
@@ -137,6 +136,7 @@
 </template>
 
 <script>
+
 import moment from 'moment'
 import axios from 'axios'
 import ModalUpdateSubtask from './../components/ModalUpdateSubtask.vue'
@@ -178,6 +178,7 @@ export default {
     this.date = this.task.date;
     this.taskid = this.task.id;
     this.moment = moment;
+    this.$emit('getTasksEmit')
   },
 
   methods: {
@@ -188,8 +189,7 @@ export default {
     },
 
     closeAndOpenModal() {
-      this.showModalUpdateSubtask = true
-      this.showMaincontainer = false
+      this.showModalUpdateSubtask = true      
     },
 
     async duplicateTask(id) {
@@ -200,11 +200,9 @@ export default {
         taskfinishdate: this.task.taskfinishdate,
         users_id: user.user.id,
       }
-
       axios.post(`http://127.0.0.1:8000/api/task/${id}/copytask`, data)
         .catch(function (error) {
           console.error(error);
-
         })
         .then((resp) => {
           this.close()
@@ -239,7 +237,6 @@ export default {
         result = await axios.put(`http://localhost:8000/api/subtask/${id}/updatesubtaskstatus`,
           {
             subtaskstatus: "completed"
-
           }).then((resp) => {
             this.$emit('getTasksEmit')
             this.close()
@@ -263,7 +260,7 @@ export default {
     },
 
     async copyTask(id) {
-      await navigator.clipboard.writeText(`http://localhost:8080/viewtask/${id}`);
+      await navigator.clipboard.writeText(`http://localhost:5173/viewtask/${id}`);
     },
 
     async deleteTask(taskid) {
@@ -281,14 +278,15 @@ export default {
           this.close()
         })
     },
+
   },
 
 }
 
 </script>
 
-
 <style scoped>
+
 .backdrop-modal {
   position: fixed;
   top: 0;
@@ -417,6 +415,14 @@ form:hover .dropdown-hover {
   height: 17px;
 }
 
+.router{
+  color:#000
+}
+
+.router:hover{
+ background-color: transparent;
+}
+
 .x {
   margin-left: 35px;
   background-color: transparent;
@@ -515,7 +521,7 @@ form:hover .dropdown-hover {
 }
 
 .subtask-text {
-  width: 370px;
+  width: 368px;
 }
 
 .title-sub-task {
@@ -552,7 +558,7 @@ form:hover .dropdown-hover {
   background-color: #f7f7f7;
   padding: 30px;
   width: 246px;
-  min-height: 531px;
+  height: 545px;
 }
 
 .title-right {
@@ -600,9 +606,9 @@ form:hover .dropdown-hover {
 @media(max-width: 490px) {
 
   #main-container {
-    top: 0;
+    top: 170px;
     transform: translate(-50%, 0);
-    width: 489px;
+    width: 470px;
   }
 
   .title-sub-task {
@@ -610,7 +616,7 @@ form:hover .dropdown-hover {
   }
 
   .right-content {
-    width: 489px;
+    width: 470px;
     height: 360px;
   }
 
@@ -635,5 +641,6 @@ form:hover .dropdown-hover {
   .sub-container {
     flex-direction: column;
   }
+  
 }
 </style>

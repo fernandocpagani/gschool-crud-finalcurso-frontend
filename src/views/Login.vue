@@ -63,12 +63,14 @@
         </footer>
 
     </div>
+
 </template>
 
 <script>
 
 import axios from 'axios'
 import Messagered from '../components/Messagered.vue'
+
 export default {
     name: "Login",
     components: {
@@ -116,7 +118,6 @@ export default {
 #main-container {
     display: grid;
     grid-template-columns: repeat(2, 1fr);
-
 }
 
 .left-content {
@@ -310,10 +311,17 @@ footer img {
 @media(max-width: 490px) {
 
     footer {
-        display: block;
-        text-align: center;
+        display: flex;
+        flex-direction: row;
+        justify-content: center;
         position: relative;
-        top: 450px;
+        top: 550px;
+        width: 100%;
+    }
+
+    h6{
+        padding-top: 4px;
+        height: 20px;
     }
 
     #padding-page {

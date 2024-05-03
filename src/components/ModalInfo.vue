@@ -60,7 +60,6 @@ export default {
     }
   },
 
-
   methods: {
 
     close() {
@@ -176,4 +175,12 @@ img {
 a {
   background-color: transparent;
 }
+
+@media(max-width: 490px) {
+  
+  #main-content{
+    top: 370px;
+  }
+}
+
 </style>

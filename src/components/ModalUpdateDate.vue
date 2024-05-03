@@ -7,7 +7,8 @@
 
         <div class="button-date">
           <img src="../../public/calendario.svg" alt="">
-          <input placeholder="Data de vencimento" class="date" type="text" onfocus="(this.type='date')" onblur="(this.type='text')" id="date" v-model="date">
+          <input placeholder="Data de vencimento" class="date" type="text" onfocus="(this.type='date')"
+            onblur="(this.type='text')" id="date" v-model="date">
         </div>
 
         <div class="buttons-date">
@@ -28,7 +29,6 @@
 import axios from 'axios'
 
 export default {
-
 
   data() {
     return {
@@ -71,7 +71,7 @@ export default {
       }
     }
   }
-
+  
 }
 
 </script>
@@ -177,6 +177,10 @@ a {
 }
 
 @media(max-width: 490px) {
+
+  .backdrop-modal {
+    width: 490px
+  }
 
   form {
     max-width: 470px;

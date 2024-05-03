@@ -7,33 +7,36 @@
       <form id="form">
 
         <div>
-          <input type="name" id="task-name" name="task-name" placeholder="Nome da tarefa" maxlength="30" v-model="tasktitle">
+          <input type="name" id="task-name" name="task-name" placeholder="Nome da tarefa" maxlength="30"
+            v-model="tasktitle">
         </div>
 
         <div>
-          <input type="name" id="task-description" name="task-description" maxlength="50" placeholder="Descrição" v-model="taskdescription">
+          <input type="name" id="task-description" name="task-description" maxlength="50" placeholder="Descrição"
+            v-model="taskdescription">
         </div>
 
         <div class="button-date">
           <img src="../../public/calendario.svg" alt="">
-          <input placeholder="Data de vencimento" class="date" type="text" onfocus="(this.type='date')" onblur="(this.type='text')" id="date" v-model="taskdate">
+          <input placeholder="Data de vencimento" class="date" type="text" onfocus="(this.type='date')"
+            onblur="(this.type='text')" id="date" v-model="taskdate">
         </div>
 
         <div class="buttons">
           <button class="white-button" @click="close()">Cancelar</button>
-          <div class="button" @click="createTask()">
-            <input type="button" class="black-button" value="Criar tarefa">
-          </div>
+          <input type="button" @click="createTask()" class="black-button" value="Criar tarefa">
         </div>
 
       </form>
 
     </div>
+
   </div>
 
 </template>
 
 <script>
+
 import axios from 'axios'
 
 export default {
@@ -59,10 +62,10 @@ export default {
 
     close() {
       this.$emit('update:showModalNewTask', false)
+      this.$root.$emit("getTasksEmit")
     },
 
-    async createTask() {
-
+    createTask() {
       const user = JSON.parse(localStorage.getItem("user-info"))
       const data = {
         tasktitle: this.tasktitle,
@@ -72,20 +75,24 @@ export default {
       }
 
       axios.post('http://localhost:8000/api/task/register', data)
+        .then((resp) => {
+          this.$emit("getTasksEmit")
+          this.close()
+        })
         .catch(function (error) {
           console.error(error);
-
         })
-        .then((resp) => {
-          window.location.reload();
-        })
+      console.log('chegou aqi')
     },
+
   },
+
 }
 
 </script>
 
 <style scoped>
+
 body {
   min-height: 100vh;
   display: grid;
@@ -228,8 +235,12 @@ a {
 
 @media(max-width: 490px) {
 
-  form {
-    max-width: 470px;
+  .backdrop-modal {
+    width: 490px
+  }
+
+  #form {
+    width: 470px;
   }
 
   .white-button {

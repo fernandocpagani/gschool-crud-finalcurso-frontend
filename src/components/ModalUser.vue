@@ -78,7 +78,9 @@ export default {
       this.$emit('closeModal')
       this.$emit('update:showModalUser', false)
     },
+
   }
+
 }
 
 </script>
@@ -168,5 +170,13 @@ img {
   width: 400px;
   position: relative;
   color: black;
+}
+
+@media(max-width: 490px) {
+  
+  #main-content{
+    top: 40px;
+  }
+  
 }
 </style>

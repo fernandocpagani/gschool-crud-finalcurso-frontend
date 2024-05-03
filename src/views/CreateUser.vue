@@ -77,6 +77,7 @@
 </template>
 
 <script>
+
 import axios from 'axios'
 import Message from '../components/Message.vue'
 import Messagered from '../components/Messagered.vue'
@@ -107,25 +108,24 @@ export default {
                 name: this.name,
                 password: this.password,
             }
-
             const result = axios.post('http://localhost:8000/api/auth/register', data)
                 .then(function (response) {
                     console.log(response)                   
                     that.msg = "Usuário cadastrado com sucesso!"
                     setTimeout(() => that.msg = "", 3000);  
                 })
-
                 .catch(error => {
                     console.log(error);
                     that.msgred = "Usuario não cadastrado"                   
                     setTimeout(() => that.msgred = "", 3000);                
                 })    
-
             this.email = "";
             this.name = "";
             this.password = "";
         }
+
     }
+
 }
 
 </script>
@@ -308,10 +308,17 @@ footer img {
 @media(max-width: 490px) {
 
     footer {
-        display: block;
-        text-align: center;
+        display: flex;
+        flex-direction: row;
+        justify-content: center;
         position: relative;
         top: 550px;
+        width: 100%;
+    }
+
+    h6{
+        padding-top: 4px;
+        height: 20px;
     }
 
     #padding-page {
@@ -363,6 +370,7 @@ footer img {
     .left-content {
         max-width: 489px;
     }
+    
 }
 
 </style>

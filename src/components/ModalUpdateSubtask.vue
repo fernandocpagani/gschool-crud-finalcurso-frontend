@@ -62,9 +62,11 @@ export default {
           subtaskdescription: this.subtaskdescription,
         })
         .then((resp) => {
-          window.location.reload();
+          this.$emit('getTasksEmit')
+          this.close()
         })
     },
+
   },
 
 }
@@ -72,6 +74,7 @@ export default {
 </script>
 
 <style scoped>
+
 body {
   min-height: 100vh;
   display: grid;
@@ -111,7 +114,7 @@ a {
   width: 678px;
   height: 216px;
   background-color: #fff;
-  position: absolute;
+  position: fixed;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
@@ -172,16 +175,19 @@ a {
   margin-left: 15px;
 }
 
-
 .buttons {
   border-top: solid 1px #e5e5e5;
   padding: 14px 25px;
 }
 
 @media(max-width: 490px) {
+  
+  .backdrop-modal{
+    width:490px
+  }
 
-  form {
-    max-width: 470px;
+  #form {
+    width: 470px;    
   }
 
   .white-button {

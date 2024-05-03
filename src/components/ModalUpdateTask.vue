@@ -182,12 +182,16 @@ a {
 
 @media(max-width: 490px) {
 
-  form {
-    max-width: 470px;
+  #main-content {
+    width: 470px;
   }
 
   .white-button {
     margin-left: 150px;
+  }
+
+  .backdrop-modal{
+    width:490px
   }
 
 }

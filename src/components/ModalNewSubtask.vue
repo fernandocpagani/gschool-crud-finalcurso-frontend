@@ -1,4 +1,4 @@
-<template>
+<template>  
   <div>
 
     <div class="backdrop-modal" v-if="showModalNewSubtask">
@@ -89,6 +89,7 @@ export default {
 </script>
 
 <style scoped>
+
 body {
   min-height: 100vh;
   display: grid;
